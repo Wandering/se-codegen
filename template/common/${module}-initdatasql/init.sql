@@ -1,3 +1,8 @@
+-- userInfo  login:admin pwd:123123
+INSERT INTO ${module}_adminuser (`id`,`login`,`password`,`creator`,`createDate`,`lastModifier`,`lastModDate`,`status`,`phone`,`email`)
+VALUES (1,'admin','4297f44b13955235245b2497399d7a93',0,${times},0,${times},0,'','')
+
+
 -- model
 <#list tables as table>
 <#assign className = table.classNameBo>
