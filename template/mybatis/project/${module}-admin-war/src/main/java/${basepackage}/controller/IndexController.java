@@ -1,8 +1,8 @@
-package cn.thinkjoy.${module}.controller;
+package cn.starteasy.${module}.controller;
 
-import cn.thinkjoy.common.managerui.controller.AbstractAdminController;
-import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
-import cn.thinkjoy.common.managerui.service.IResourceService;
+import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
+import cn.starteasy.core.common.adminui.controller.helpers.ActionPermHelper;
+import cn.starteasy.core.common.adminui.service.IResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

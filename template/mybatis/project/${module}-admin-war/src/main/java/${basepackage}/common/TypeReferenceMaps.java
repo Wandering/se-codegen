@@ -7,10 +7,10 @@
 
 package ${basepackage}.common;
 
-import cn.thinkjoy.common.domain.BaseDomain;
-import cn.thinkjoy.common.protocol.RequestT;
-import cn.thinkjoy.common.restful.ITypeReference;
-import cn.thinkjoy.common.restful.RawTypeReference;
+import cn.starteasy.core.common.domain.BaseDomain;
+import cn.starteasy.core.common.protocol.RequestT;
+import cn.starteasy.core.common.restful.ITypeReference;
+import cn.starteasy.core.common.restful.RawTypeReference;
 import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Maps;
 

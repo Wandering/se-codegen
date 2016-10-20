@@ -11,12 +11,12 @@
 package ${basepackage}.controller.api;
 
 import ${mergePkgService}.I${className}Service;
-import cn.thinkjoy.common.domain.SearchField;
-import cn.thinkjoy.common.domain.StringWrapper;
-import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.common.utils.RtnCodeEnum;
-import cn.thinkjoy.util.StringUtil;
+import cn.starteasy.core.common.domain.SearchField;
+import cn.starteasy.core.common.domain.StringWrapper;
+import cn.starteasy.core.common.domain.view.BizData4Page;
+import cn.starteasy.core.common.exception.BizException;
+import cn.starteasy.core.common.utils.RtnCodeEnum;
+import cn.starteasy.util.StringUtil;
 
 import ${basepackage}.domain.${className};
 import ${mergePkgService}.I${className}Service;

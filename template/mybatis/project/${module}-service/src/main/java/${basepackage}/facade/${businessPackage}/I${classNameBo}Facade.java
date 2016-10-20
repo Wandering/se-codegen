@@ -19,7 +19,7 @@ package ${basepackage}.facade.${table.businessPackage};
 package ${basepackage}.facade;
 </#if>
 
-import cn.thinkjoy.common.service.IPersistenceProvider;
+import cn.starteasy.core.common.service.IPersistenceProvider;
 
 public interface I${className}Facade extends IPersistenceProvider{
 

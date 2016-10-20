@@ -5,21 +5,21 @@
  * $Id:  RoleController.java 2015-01-27 15:38:39 $
  */
 
-package cn.thinkjoy.${module}.controller;
+package cn.starteasy.${module}.controller;
 
-import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.managerui.controller.AbstractAdminController;
-import cn.thinkjoy.common.managerui.domain.Resource;
-import cn.thinkjoy.common.managerui.domain.ResourceAction;
-import cn.thinkjoy.common.managerui.domain.RoleResource;
-import cn.thinkjoy.common.managerui.service.IResourceActionService;
-import cn.thinkjoy.common.managerui.service.IResourceService;
-import cn.thinkjoy.common.managerui.service.IRoleResourceService;
-import cn.thinkjoy.common.managerui.service.IRoleService;
-import cn.thinkjoy.common.utils.UserContext;
-import cn.thinkjoy.${module}.domain.dto.AssignDTO;
-import cn.thinkjoy.${module}.domain.dto.AssignDetailDTO;
-import cn.thinkjoy.${module}.domain.dto.ResourceDTO;
+import cn.starteasy.common.domain.view.BizData4Page;
+import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
+import cn.starteasy.core.common.adminui.domain.Resource;
+import cn.starteasy.core.common.adminui.domain.ResourceAction;
+import cn.starteasy.core.common.adminui.domain.RoleResource;
+import cn.starteasy.core.common.adminui.service.IResourceActionService;
+import cn.starteasy.core.common.adminui.service.IResourceService;
+import cn.starteasy.core.common.adminui.service.IRoleResourceService;
+import cn.starteasy.core.common.adminui.service.IRoleService;
+import cn.starteasy.common.utils.UserContext;
+import cn.starteasy.${module}.domain.dto.AssignDTO;
+import cn.starteasy.${module}.domain.dto.AssignDetailDTO;
+import cn.starteasy.${module}.domain.dto.ResourceDTO;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

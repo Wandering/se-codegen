@@ -5,27 +5,23 @@
  * $Id:  AdminController.java 2015-01-27 15:38:37 $
  */
 
-package cn.thinkjoy.${module}.controller;
-
-import cn.thinkjoy.cloudstack.context.CloudContextFactory;
-import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
-import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
-import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
-import cn.thinkjoy.${module}.domain.dto.AssignDTO;
-import cn.thinkjoy.${module}.domain.dto.AssignDetailDTO;
-import cn.thinkjoy.${module}.domain.dto.RoleDTO;
-import cn.thinkjoy.${module}.domain.dto.UserDTO;
-import cn.thinkjoy.common.domain.UserDomain;
-import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.managerui.controller.AbstractAdminController;
-import cn.thinkjoy.common.managerui.domain.Role;
-import cn.thinkjoy.common.managerui.domain.RoleUser;
-import cn.thinkjoy.common.managerui.domain.User;
-import cn.thinkjoy.common.managerui.service.IRoleService;
-import cn.thinkjoy.common.managerui.service.IRoleUserService;
-import cn.thinkjoy.common.protocol.ResponseT;
-import cn.thinkjoy.common.service.IPageService;
-import cn.thinkjoy.common.utils.UserContext;
+package cn.starteasy.${module}.controller;
+        
+import cn.starteasy.${module}.domain.dto.AssignDTO;
+import cn.starteasy.${module}.domain.dto.AssignDetailDTO;
+import cn.starteasy.${module}.domain.dto.RoleDTO;
+import cn.starteasy.${module}.domain.dto.UserDTO;
+import cn.starteasy.common.domain.UserDomain;
+import cn.starteasy.common.domain.view.BizData4Page;
+import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
+import cn.starteasy.core.common.adminui.domain.Role;
+import cn.starteasy.core.common.adminui.domain.RoleUser;
+import cn.starteasy.core.common.adminui.domain.User;
+import cn.starteasy.core.common.adminui.service.IRoleService;
+import cn.starteasy.core.common.adminui.service.IRoleUserService;
+import cn.starteasy.core.common.protocol.ResponseT;
+import cn.starteasy.core.common.service.IPageService;
+import cn.starteasy.core.common.utils.UserContext;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;

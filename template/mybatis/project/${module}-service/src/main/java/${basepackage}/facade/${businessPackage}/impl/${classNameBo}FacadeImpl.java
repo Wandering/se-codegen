@@ -19,8 +19,8 @@
         package ${basepackage}.facade.impl;
 </#if>
 
-import cn.thinkjoy.common.service.IBaseService;
-import cn.thinkjoy.common.service.impl.AbstractPersistenceProvider;
+import cn.starteasy.core.common.service.IBaseService;
+import cn.starteasy.core.common.service.impl.AbstractPersistenceProvider;
 <#if hasBusinessPackage>
 import ${basepackage}.facade.${table.businessPackage}.I${className}Facade;
 import ${basepackage}.service.${table.businessPackage}.I${className}Service;

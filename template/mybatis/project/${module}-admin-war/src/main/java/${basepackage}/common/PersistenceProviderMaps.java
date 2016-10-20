@@ -8,7 +8,7 @@
 
 package ${basepackage}.common;
 
-import cn.thinkjoy.common.managerui.controller.helpers.BasePersistenceProviderMaps;
+import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

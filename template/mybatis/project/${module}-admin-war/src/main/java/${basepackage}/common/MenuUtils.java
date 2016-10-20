@@ -1,7 +1,7 @@
 package ${basepackage}.common;
 
-import cn.thinkjoy.common.managerui.domain.Resource;
-import cn.thinkjoy.common.managerui.domain.ResourceGrid;
+import cn.starteasy.core.common.adminui.domain.Resource;
+import cn.starteasy.core.common.adminui.domain.ResourceGrid;
 import ${basepackage}.domain.dto.ResourceDTO;
 import org.apache.commons.lang.StringUtils;
 

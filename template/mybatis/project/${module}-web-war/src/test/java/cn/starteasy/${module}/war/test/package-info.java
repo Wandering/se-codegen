@@ -1,1 +1,1 @@
-package cn.thinkjoy.ucenter.war.test;
+package cn.starteasy;

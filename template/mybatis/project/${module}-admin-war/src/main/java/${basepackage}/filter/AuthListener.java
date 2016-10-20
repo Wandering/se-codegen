@@ -1,7 +1,7 @@
 package ${basepackage}.filter;
 
-import cn.thinkjoy.common.domain.UserDomain;
-import cn.thinkjoy.common.utils.UserContext;
+import cn.starteasy.core.common.domain.UserDomain;
+import cn.starteasy.core.common.utils.UserContext;
 import com.qtone.open.api.uic.dto.AccountDto;
 import com.qtone.open.ucm.BaseRequest;
 import com.qtone.open.ucm.client.IQTOAuthListener;

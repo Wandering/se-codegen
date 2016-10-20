@@ -150,7 +150,8 @@ subprojects {
     }
 
     dependencies {
-        compile group: "cn.thinkjoy.common", name: "thinkjoy-domain-common", version: "$thinkjoyCommonVersion", changing: true
+        compile("cn.starteasy.core.common:se-domain-common:$seCommonVersion")
+        compile("cn.starteasy.core.common:se-context:$seCommonVersion")
     }
 }
 

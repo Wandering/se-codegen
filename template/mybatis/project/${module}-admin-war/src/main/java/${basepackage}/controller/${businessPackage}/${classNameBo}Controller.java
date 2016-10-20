@@ -30,9 +30,9 @@ import ${mergePkgService}.${table.businessPackage}.I${className}Service;
 <#if !hasBusinessPackage>
 import ${mergePkgService}.I${className}Service;
 </#if>
-import cn.thinkjoy.common.managerui.dao.IResourceGridDAO;
-import cn.thinkjoy.common.managerui.service.IResourceGridService;
-import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.starteasy.core.common.adminui.dao.IResourceGridDAO;
+import cn.starteasy.core.common.adminui.service.IResourceGridService;
+import cn.starteasy.core.common.domain.view.BizData4Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;

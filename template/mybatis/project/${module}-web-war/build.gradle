@@ -3,19 +3,13 @@ dependencies {
 
     compile "org.freemarker:freemarker:$freemarkerVersion"
 
-    compile group: "cn.thinkjoy.common", name: "thinkjoy-web-common", version: "$thinkjoyCommonVersion", changing: true
 
-    compile (group: "cn.thinkjoy.common", name: "thinkjoy-mu-common", version: "$thinkjoyCommonVersion", changing: true)
-            {
-                exclude group:'com.google.guava'
-                exclude group:'com.easypoi'
-            }
 
     compile project(':${module}-service')
 
     compile project(':${module}-domain')
 
-    compile group:"cn.thinkjoy.ucenter",name:"ucenter-client",version:"$ucenterVersion", changing: true
+
 
 
     testCompile 'org.eclipse.jetty.aggregate:jetty-webapp:8.1.9.v20130131'

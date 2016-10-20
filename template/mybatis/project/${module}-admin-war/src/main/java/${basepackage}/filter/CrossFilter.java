@@ -1,4 +1,4 @@
-package cn.thinkjoy.${module}.filter;
+package cn.starteasy.${module}.filter;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 

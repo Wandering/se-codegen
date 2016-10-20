@@ -7,9 +7,9 @@
 
 
 package ${basepackage}.controller;
-import cn.thinkjoy.common.managerui.controller.AbstractAdminController;
-import cn.thinkjoy.common.managerui.domain.Resource;
-import cn.thinkjoy.common.managerui.domain.ResourceGrid;
+import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
+import cn.starteasy.core.common.adminui.domain.Resource;
+import cn.starteasy.core.common.adminui.domain.ResourceGrid;
 import ${basepackage}.common.MenuUtils;
 import org.springframework.web.servlet.ModelAndView;
 

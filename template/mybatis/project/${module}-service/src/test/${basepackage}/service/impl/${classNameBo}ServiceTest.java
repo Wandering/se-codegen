@@ -9,10 +9,10 @@
  */
 
 package ${basepackage}.service.impl;
-import cn.thinkjoy.common.dao.IBaseDAO;
-import cn.thinkjoy.common.domain.BaseDomain;
-import cn.thinkjoy.common.service.IBaseService;
-import cn.thinkjoy.common.service.IPageService;
+import cn.starteasy.common.dao.IBaseDAO;
+import cn.starteasy.common.domain.BaseDomain;
+import cn.starteasy.common.service.IBaseService;
+import cn.starteasy.common.service.IPageService;
 
 import ${basepackage}.service.I${className}Service;
 

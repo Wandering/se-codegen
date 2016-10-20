@@ -8,7 +8,7 @@
 
 package ${basepackage}.common;
 
-import cn.thinkjoy.common.service.IBaseService;
+import cn.starteasy.core.common.service.IBaseService;
 <#list newtables as table>
 <#assign className = table.classNameBo>
 import ${basepackage}.service.I${className}Service;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.Map;
 
-import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
+import cn.starteasy.core.common.managerui.controller.helpers.BaseServiceMaps;
 
 /**
  * Created by shurrik on 14-9-24.

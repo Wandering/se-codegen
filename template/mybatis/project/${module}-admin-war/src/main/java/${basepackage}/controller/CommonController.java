@@ -11,11 +11,11 @@
 package ${basepackage}.controller;
 
 
-import cn.thinkjoy.common.managerui.controller.helpers.BasePersistenceProviderMaps;
-import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
-import cn.thinkjoy.common.managerui.controller.AbstractCommonController;
+import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;
+import cn.starteasy.core.common.adminui.controller.helpers.BaseServiceMaps;
+import cn.starteasy.core.common.adminui.controller.AbstractCommonController;
 
-import cn.thinkjoy.common.service.IBaseService;
+import cn.starteasy.common.service.IBaseService;
 import ${basepackage}.common.PersistenceProviderMaps;
 import ${basepackage}.common.ServiceMaps;
 
