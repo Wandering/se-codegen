@@ -16,7 +16,7 @@
 
     <!-- jsp namespace: web/${namespace}/${className}/list.jsp -->
     <entry key="namespace">pages</entry>
-
+    <entry key="rootDir">${user.dir}/</entry>
     <entry key="projectDir">${user.dir}/project/se/${module}</entry>
 
     <entry key="outRoot">${user.dir}/generator-output</entry>

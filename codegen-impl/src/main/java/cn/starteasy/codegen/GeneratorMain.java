@@ -89,6 +89,7 @@ public class GeneratorMain {
         String admin_projectPath = autoGenProject + "/" + module + "-admin-war";
         String api_projectPath = autoGenProject + "/" + module + "-api";
         String web_projectPath = autoGenProject + "/" + module + "-web-war";
+        String webfront_projectPath = autoGenProject + "/" + module + "-webfront";
         String isfirtstFlag = domain_projectPath + "/src/main/java/" + basePackageDir + "/domain";
 
         String isAdminInit = GeneratorProperties.getRequiredProperty("initAdminSql");//admin是否需要初始化数据库
@@ -97,319 +98,23 @@ public class GeneratorMain {
         if (f.exists() && isCreateProject) {
             isCreateProject = false;
         }
-        if (isCreateProject) {
-            //yq add 进行对应的文件拷贝
-            //docs 下的多文件进行合并
-//            File allDocsFile = new File(outRoot + "/" + module + "-domain/docs/all.html");
-//            Appendable allDocsFileAppendable = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(allDocsFile)));
-//			String initSqldir = outRoot+"/" + module + "-initdatasql";
-            //domain拷贝
-            //autosetup工程位置
-            /*****
-             * 复制domain
-             */
-            String parentDirStrTest = "";
-            String parentDirStr = domain_projectPath + "/src/main/java/" + basePackageDir + "/domain";
-            File parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            File sourceDir = new File(outRoot + "/" + module + "-domain");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (file.isFile()) {
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                    }
-//                    else if(file.getName().equals("docs")){
-//                        mergeFile(file.getPath(), allDocsFileAppendable);
-//
-//                    }
-                    else
-                    {
 
-                        copyDirectiory(file.getAbsolutePath(), parentDirStr + "/" + file.getName());
-                    }
-                }
-            }
+        admin_projectPath = outRoot + "/project/"+ module + "-admin-war";
+        webfront_projectPath = outRoot + "/project/"+ module + "-webfront";
 
-            //dao拷贝
-            parentDirStr = service_projectPath + "/src/main/java/" + basePackageDir + "/dao";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            if (sourceDir.listFiles() != null) {
-                sourceDir = new File(outRoot + "/" + module + "-service/java");
-                for (File file : sourceDir.listFiles()) {
-                    if(file.isDirectory()){
-                        copyDirectiory(file.getPath(),parentDirStr+"/"+file.getName());
-                    }else{
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                    }
-                }
-            }
-
-            //mybatis拷贝
-            parentDirStr = service_projectPath + "/src/main/resources/mybatis";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            if (sourceDir.listFiles() != null) {
-                sourceDir = new File(outRoot + "/" + module + "-service/resources");
-                for (File file : sourceDir.listFiles()) {
-                    if(file.isDirectory()){
-                        copyDirectiory(file.getPath(),parentDirStr+"/"+file.getName());
-                    }else{
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                    }
-                }
-            }
-
-            //dubbo拷贝
-            parentDirStr = service_projectPath + "/src/main/resources/dubbo";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/dubbo");
-            for (File file : sourceDir.listFiles()) {
-                Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-            }
+        //拷贝静态文件  因为freemarker 不能 直接 生成
+        //将  /template_static/admin-war 下的文件 拷贝到 admin-war/src/main下 然后将/template_static/webfront/static 拷贝到 admin-war/src/main/webapp/assets下
+        copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war", admin_projectPath+"/src/main");
+        copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront/static", admin_projectPath+"/src/main/webapp/assets");
 
 
-            //api拷贝
-            parentDirStrTest = service_projectPath + "/src/test/java/" + basePackageDir + "/service/impl";
-            parentDirStr = service_projectPath + "/src/main/java/" + basePackageDir + "/service";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-api");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if(file.isDirectory()){
-                        if(!file.getName().endsWith("test")) {
-                            copyDirectiory(file.getPath(),parentDirStr+"/"+file.getName());
-                        }else{
-                            copyDirectiory(file.getPath(),parentDirStrTest+"/"+file.getName());
-                        }
-                    }else{
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                    }
-                }
-            }
+        copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront", webfront_projectPath+"/resources");
 
 
-            //facade拷贝
-            parentDirStrTest = service_projectPath + "/src/test/java/" + basePackageDir + "/facade/impl";
-            parentDirStr = service_projectPath + "/src/main/java/" + basePackageDir + "/facade";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-facade");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if(file.isDirectory()){
-                        if(file.getName().endsWith("test")){
-                            copyDirectiory(file.getPath(),parentDirStrTest+ "/" + file.getName());
-                        }else {
-                            copyDirectiory(file.getPath(),parentDirStr+ "/" + file.getName());
-                        }
-                    }else{
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                    }
-                }
-            }
-
-            //war-maps拷贝
-            parentDirStr = admin_projectPath + "/src/main/java/" + basePackageDir + "/common";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-common");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                }
-            }
-
-            //war-controller拷贝
-            parentDirStr = admin_projectPath + "/src/main/java/" + basePackageDir + "/controller";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-controller");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if(file.isDirectory()){
-                        copyDirectiory(file.getPath(),parentDirStr+"/" + file.getName());
-                    }else{
-//                        if (!"RoleController".equals(file.getName()) || !"UserController".equals(file.getName())) {
-                            Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-//                        }
-                    }
-                }
-            }
-
-            //war-filter拷贝
-            parentDirStr = admin_projectPath + "/src/main/java/" + basePackageDir + "/filter";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-filter");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                }
-            }
-
-            //war-ftl拷贝
-            parentDirStr = admin_projectPath + "/src/main/webapp/WEB-INF/view/module";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-view");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (!file.isDirectory()) {
-                        if (!"role.ftl".equals(file.getName()) || !"user.ftl".equals(file.getName())) {
-                            Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                        }
-                    }
-                }
-            }
-
-            //war-custome-ftl拷贝
-            parentDirStr = admin_projectPath + "/src/main/webapp/WEB-INF/view/module/custome";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-view/custome");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (!file.isDirectory()) {
-                        if (!"role_page_grid.ftl".equals(file.getName()) || !"user_page_grid.ftl".equals(file.getName())) {
-                            Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                        }
-                    }
-                }
-            }
-
-            //war-custome-script-ftl拷贝
-            parentDirStr = admin_projectPath + "/src/main/webapp/WEB-INF/view/module/custome/script";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-view/custome/script");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (!file.isDirectory()) {
-                        //if(!"role_biz_script.ftl".equals(file.getName()) || !"user_biz_script.ftl".equals(file.getName())) {
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                        //}
-                    }
-                }
-            }
-
-            //war-custome-js-ftl拷贝
-            parentDirStr = admin_projectPath + "/src/main/webapp/WEB-INF/view/module/custome/js";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            sourceDir = new File(outRoot + "/" + module + "-view/custome/js");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (!file.isDirectory()) {
-                        //if(!"biz_role.ftl".equals(file.getName()) || !"UserController".equals(file.getName())) {
-                        Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                        //}
-                    }
-                }
-            }
-
-            /*****
-             * 复制api
-             */
-            parentDirStr = api_projectPath + "/src/main/java/" + basePackageDir + "/api";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-
-            /*****
-             * 复制web-war
-             */
-            String tempParentDirStr = web_projectPath + "/src/main/java/" + basePackageDir;
-            parentDirStr = tempParentDirStr + "/controller";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-            //复制controller
-            copyDirectiory(outRoot + "/" + module + "-web-controller", parentDirStr);
-
-            //拷贝resources
-            parentDirStr = web_projectPath + "/src/main/resources";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-
-            copyDirectiory(outRoot + "/web/resources", parentDirStr);
+        copyFile(outRoot + "/ServiceMaps.java", admin_projectPath + "/src/main/java/" + basePackage +"/common");
+        new File(outRoot + "/ServiceMaps.java").delete();
 
 
-            //复制 common
-            parentDirStr = tempParentDirStr + "/common";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-
-            sourceDir = new File(outRoot + "/" + module + "-common");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (!file.isDirectory()) {
-                        //不拷贝  ServiceMaps.java
-                        if (!"ServiceMaps.java".equals(file.getName())) {
-                            Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                        }
-                    }
-                }
-            }
-
-            //复制 filter
-            parentDirStr = tempParentDirStr + "/filter";
-            parentDir = new File(parentDirStr);
-            parentDir.mkdirs();
-
-            sourceDir = new File(outRoot + "/" + module + "-filter");
-            if (sourceDir.listFiles() != null) {
-                for (File file : sourceDir.listFiles()) {
-                    if (!file.isDirectory()) {
-                        //不拷贝  ServiceMaps.java
-                        if (!"ServiceMaps.java".equals(file.getName())) {
-                            Files.copy(file, new File(parentDirStr + "/" + file.getName()));
-                        }
-                    }
-                }
-            }
-
-            //web-war 增加WEB-INF  web_projectPath + "/src/main/java/"
-            copyDirectiory(outRoot + "/webwar-config", web_projectPath + "/src/main/webapp");
-            copyDirectiory(outRoot + "/adminwar-config", admin_projectPath + "/src/main/webapp");
-
-            //复制build.gradle
-            copyBuildGradle(outRoot, "domain", domain_projectPath);
-            copyBuildGradle(outRoot, "admin", admin_projectPath);
-            copyBuildGradle(outRoot, "api", api_projectPath);
-            copyBuildGradle(outRoot, "service", service_projectPath);
-            copyBuildGradle(outRoot, "web", web_projectPath);
-            //项目build.gradle
-            copyBuildGradleProjectGradle(outRoot, "project", projectDir, gradle_version);
-
-            //copy-test
-            copyDirectiory(outRoot + "/test", admin_projectPath + "/src/test");
-            copyDirectiory(outRoot + "/test", web_projectPath + "/src/test");
-            //copy-admin-resource
-            copyDirectiory(outRoot + "/admin/resources", admin_projectPath + "/src/main/resources");
-            copyDirectiory(outRoot + "/service/resources", service_projectPath + "/src/main/resources");
-            try {
-                if (System.getProperty("os.name").startsWith("Windows")) {
-                    copyDirectiory(outRoot.substring(0, outRoot.replaceAll("/","\\").lastIndexOf("\\")) + "/common/webapp", admin_projectPath + "/src/main/webapp");
-
-                } else {
-                    copyDirectiory(outRoot.substring(0, outRoot.lastIndexOf("/")) + "/common/webapp", admin_projectPath + "/src/main/webapp");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                logger.error("请检查你的配置文件outRoot,请配置你的outRoot到codegen目录/generator-output");
-            }
-
-            /*****
-             * 插入admin初始数据
-             */
-            if(Boolean.TRUE.toString().equalsIgnoreCase(isAdminInit)){
-                String initSqldir = outRoot + "/" + module + "-initdatasql";
-                List<String> list = insertResuorce(initSqldir);
-                insertSql(list, module);
-            }
-
-        }
 
         Thread.sleep(20000);
 //		g.generateByAllTable("template/hibernate");
@@ -476,6 +181,11 @@ public class GeneratorMain {
             ((Flushable) targetDir).flush();
         }
 
+    }
+
+    private static void copyFile(String file, String targetDir) throws IOException {
+        File rawFile = new File(file);
+        Files.copy(rawFile, new File(targetDir+"/"+rawFile.getName()));
     }
 
     private static void copyDirectiory(String sourceDir, String targetDir) throws IOException {
