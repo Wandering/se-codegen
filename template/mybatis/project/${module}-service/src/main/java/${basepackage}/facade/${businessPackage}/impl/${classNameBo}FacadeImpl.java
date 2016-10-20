@@ -1,12 +1,7 @@
 <#assign className = table.classNameBo>
 <#assign classNameLower = className?uncap_first>
 <#assign classNameAllLower = table.classNameBo?lower_case>
-/*
- * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
- *
- * Project Name: ${module}
- * $Id:  ${className}FacadeImpl.java ${now?string('yyyy-MM-dd HH:mm:ss')} $
- */
+<#include "/java_copyright.include"/>
 <#include "/macro.include"/>
 <#assign hasBusinessPackage = false>
 <#if (table.businessPackage!="")>

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2013-2014, starteasy Inc. All Rights Reserved.
  * 
- * Project Name: starteasy
+ * Project Name: ${module}
  * $Id:  ${now?string('yyyy-MM-dd HH:mm:ss')} $ 
  */
  

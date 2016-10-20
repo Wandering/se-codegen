@@ -1,11 +1,3 @@
-
-/*
- * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
- *
- * Project Name: ${module}
- * $Id:  ${module}ServiceMaps.java ${now?string('yyyy-MM-dd HH:mm:ss')} $
- */
-
 package ${basepackage}.common;
 
 import cn.starteasy.core.common.service.IBaseService;
@@ -24,9 +16,6 @@ import java.util.Map;
 
 import cn.starteasy.core.common.managerui.controller.helpers.BaseServiceMaps;
 
-/**
- * Created by shurrik on 14-9-24.
- */
 @Service("${module}ServiceMaps")
 public class ServiceMaps extends BaseServiceMaps{
 

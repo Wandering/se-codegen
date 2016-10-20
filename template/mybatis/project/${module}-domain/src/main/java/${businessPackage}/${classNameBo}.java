@@ -1,10 +1,5 @@
 <#assign className = table.classNameBo>
-/*
- * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
- *
- * Project Name: ${module}
- * $Id:  ${className}.java ${now?string('yyyy-MM-dd HH:mm:ss')} $
- */
+
 <#include "/macro.include"/>
 <#assign classNameLower = className?uncap_first>
 
@@ -33,6 +28,7 @@
 <#if (table.businessPackage!="")>
 <#assign hasBusinessPackage = true>
 </#if>
+<#include "/java_copyright.include"/>
 <#if hasBusinessPackage>
 package ${basepackage}.domain.${table.businessPackage};
 </#if>

@@ -17,9 +17,7 @@ public class WarStarter {
     public static void main(String[] args) {
         Server server = new Server(8099);
         WebAppContext context = new WebAppContext("src/main/webapp", "");
-        //context.setWar("/Users/qyang/works/workspace/thinkjoy-dap/dap-mq-bridge-war/src/main/webapp");
-//        context.setContextPath("/src/main/webapp");
-//        context.setParentLoaderPriority(true);
+
         server.setHandler(context);
 
         try {

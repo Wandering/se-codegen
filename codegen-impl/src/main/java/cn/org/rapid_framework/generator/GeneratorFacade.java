@@ -205,8 +205,8 @@ public class GeneratorFacade {
                     m.templateModel.put("mergePkgService", m.templateModel.get("basepackage") + ".service");
                     g.generateBy(m.templateModel, m.filePathModel, isCommon);
                 } else {
-                    m.templateModel.put("mergePkg", "cn.thinkjoy.common.managerui.dao");
-                    m.templateModel.put("mergePkgService", "cn.thinkjoy.common.managerui.service");
+                    m.templateModel.put("mergePkg", "cn.starteasy.core.common.adminui.dao");
+                    m.templateModel.put("mergePkgService", "cn.starteasy.core.common.adminui.service");
                     g.generateBy(m.templateModel, m.filePathModel, isCommon);
                 }
             }
