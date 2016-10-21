@@ -22,15 +22,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class SampleWebStaticApplication extends SpringBootServletInitializer {
+public class WebStaticApplication extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(SampleWebStaticApplication.class);
+		return application.sources(WebStaticApplication.class);
 	}
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SampleWebStaticApplication.class, args);
+		SpringApplication.run(WebStaticApplication.class, args);
 	}
 
 }

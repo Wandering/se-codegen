@@ -22,9 +22,9 @@ import java.util.Collection;
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class})
-public class AdminSampleApplicationApp {
+public class WebApplicationApp {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminSampleApplicationApp.class);
+    private static final Logger log = LoggerFactory.getLogger(WebApplicationApp.class);
 
     @Inject
     private Environment env;
@@ -57,7 +57,7 @@ public class AdminSampleApplicationApp {
      * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(AdminSampleApplicationApp.class);
+        SpringApplication app = new SpringApplication(WebApplicationApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +

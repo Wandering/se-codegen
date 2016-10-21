@@ -19,12 +19,12 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
-@ComponentScan
+@ComponentScan(basePackages={"cn.starteasy"})
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class})
-public class AdminSampleApplicationApp {
+public class AdminApplicationApp {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminSampleApplicationApp.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminApplicationApp.class);
 
     @Inject
     private Environment env;
@@ -57,7 +57,7 @@ public class AdminSampleApplicationApp {
      * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(AdminSampleApplicationApp.class);
+        SpringApplication app = new SpringApplication(AdminApplicationApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         log.info("\n----------------------------------------------------------\n\t" +
