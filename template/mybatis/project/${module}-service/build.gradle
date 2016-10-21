@@ -2,7 +2,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile "org.springframework:spring-test:$springVersion"
 
-    compile("cn.starteasy.core.common:se-biz-common:$seCommonVersion")
+    compile("cn.starteasy.core.common:se-admin-ser-common:$seCommonVersion")
 
     compile project(':${module}-api')
 

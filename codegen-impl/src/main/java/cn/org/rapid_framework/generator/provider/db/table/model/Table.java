@@ -74,6 +74,7 @@ public class Table implements java.io.Serializable,Cloneable {
     String description;
 
 	String businessPackage;
+	/** 内置表，不生成 doamin/DAO/Service */
 	boolean sysTable;
 
     int parentId;

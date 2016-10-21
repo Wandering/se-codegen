@@ -20,8 +20,8 @@ import java.util.List;
 
 
 /**
- * @author badqiu
- * @email badqiu(a)gmail.com
+ * @author qyang
+ * starteasy
  */
 
 public class GeneratorMain {
@@ -111,8 +111,10 @@ public class GeneratorMain {
         copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront", webfront_projectPath+"/resources");
 
 
-        copyFile(outRoot + "/ServiceMaps.java", admin_projectPath + "/src/main/java/" + basePackage +"/common");
+        copyFile(outRoot + "/ServiceMaps.java", admin_projectPath + "/src/main/java/" + basePackageDir +"/web/common");
         new File(outRoot + "/ServiceMaps.java").delete();
+
+        //删除内置表的 domain/dao/service
 
 
 

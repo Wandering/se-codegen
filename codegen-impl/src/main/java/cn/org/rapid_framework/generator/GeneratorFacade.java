@@ -177,7 +177,7 @@ public class GeneratorFacade {
                 //允许我多占用一会cpu
 
 				table.setSqlName(table.getSqlName().toLowerCase());
-				table.setSysTable(false);
+
 				newtables.add(table);
             }
 

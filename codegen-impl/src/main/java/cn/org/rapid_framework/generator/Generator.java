@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import cn.org.rapid_framework.generator.provider.db.table.model.Table;
 import cn.org.rapid_framework.generator.util.AntPathMatcher;
 import cn.org.rapid_framework.generator.util.BeanHelper;
 import cn.org.rapid_framework.generator.util.FileHelper;
@@ -171,10 +172,18 @@ public class Generator {
 		GLogger.println("-------------------load template from templateRootDir = '"+templateRootDir.getAbsolutePath()+"' outRootDir:"+new File(outRootDir).getAbsolutePath());
 		
 		 List srcFiles = FileHelper.searchAllNotIgnoreFile(templateRootDir);
-		
+
+
 		List<Exception> exceptions = new ArrayList();
 		for(int i = 0; i < srcFiles.size(); i++) {
 			File srcFile = (File)srcFiles.get(i);
+
+
+			//内置表的逻辑处理
+			if(templateModel.get("table") != null && ((Table)templateModel.get("table")).isSysTable() && (srcFile.getPath().contains("/domain/") ||
+					srcFile.getPath().contains("/dao/") || srcFile.getPath().contains("/service/"))){
+				continue;
+			}
 
             if(isCommon){  //只执行DAO.xml模板   **Controller.java   ***.ftl  （managerui-startup中不需要这些特定的模板）
                 if(srcFile.getName().endsWith("DAO.xml") || srcFile.getName().endsWith(".ftl") || (srcFile.getName().endsWith("Controller.java") && !srcFile.getName().endsWith("CommonController.java"))){

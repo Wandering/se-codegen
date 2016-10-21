@@ -43,7 +43,7 @@ public class TableFactory {
 	private Map<String,String> tabException = new HashMap<String, String>();
 	private static String[] alreadyTbls = new String[]{
 			"_data_model", "_model", "_resource", "_resource_action", "_resource_grid",
-			"_role", "_role_resource", "_role_user", "_user_data", "_datagroup", "_datagroup_data", "_user_datagroup", "_adminuser", "_adminUserToken"};
+			"_role", "_role_resource", "_role_user", "_user_data", "_datagroup", "_datagroup_data", "_user_datagroup"};//, "_adminuser", "_adminUserToken"};
 
 	private static String[] defaultColumns = new String[]{"createDate","lastModifier","lastModDate",
 			"dataModelId","dataId","groupId","tblName",
@@ -291,6 +291,12 @@ public class TableFactory {
                 className = "I";
                 table.setInstanceName(instanceName);
                 instanceName = "";
+
+				if(isdefaultTable((table.getSqlName()))) {
+					table.setSysTable(true);
+				} else {
+					table.setSysTable(false);
+				}
             }
         }
 
