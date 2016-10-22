@@ -108,7 +108,7 @@ public class GeneratorMain {
         copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront/static", admin_projectPath+"/src/main/webapp/assets");
 
 
-        copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront", webfront_projectPath+"/resources");
+        copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront", webfront_projectPath+"/src/main/resources");
 
 
         copyFile(outRoot + "/ServiceMaps.java", admin_projectPath + "/src/main/java/" + basePackageDir +"/web/common");

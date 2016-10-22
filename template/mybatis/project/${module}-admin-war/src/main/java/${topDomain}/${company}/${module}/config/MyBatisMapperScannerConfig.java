@@ -30,7 +30,7 @@ public class MyBatisMapperScannerConfig {
 
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("cn.starteasy.core.common.adminui.backend.dao");
+        mapperScannerConfigurer.setBasePackage("cn.starteasy.core.common.adminui.backend.dao,${basepackage}.dao");
         return mapperScannerConfigurer;
     }
 
