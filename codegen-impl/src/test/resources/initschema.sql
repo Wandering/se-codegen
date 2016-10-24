@@ -19,9 +19,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP TABLE IF EXISTS `se_adminuser`;
+DROP TABLE IF EXISTS `se_adminUser`;
 
-CREATE TABLE `se_adminuser` (
+CREATE TABLE `se_adminUser` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(15) DEFAULT NULL COMMENT '登录名',
   `password` varchar(128) DEFAULT NULL COMMENT '密码',
@@ -39,7 +39,7 @@ CREATE TABLE `se_adminuser` (
 LOCK TABLES `se_adminuser` WRITE;
 /*!40000 ALTER TABLE `se_adminuser` DISABLE KEYS */;
 
-INSERT INTO `se_adminuser` (`id`, `login`, `password`, `creator`, `createDate`, `lastModifier`, `lastModDate`, `status`, `phone`, `email`)
+INSERT INTO `se_adminUser` (`id`, `login`, `password`, `creator`, `createDate`, `lastModifier`, `lastModDate`, `status`, `phone`, `email`)
 VALUES
 	(3,'admin','$2a$10$wRRch8cNGkVCyG9Gp7SziOO0bPsa8I2LizeqzEciHD/1smnAacZrG',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 

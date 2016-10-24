@@ -4,18 +4,27 @@
 <#include "/java_copyright.include"/>
 package ${basepackage}.web.controller.api;
 
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
+import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
+import cn.starteasy.core.common.domain.wrapper.BooleanWrapper;
+<#if table.sysTable>
+import cn.starteasy.core.common.adminui.backend.service.I${className}Service;
+<#else>
 import ${mergePkgService}.I${className}Service;
-import cn.starteasy.core.common.domain.SearchField;
-import cn.starteasy.core.common.domain.StringWrapper;
+</#if>
+import cn.starteasy.core.common.domain.view.admin.SearchField;
+import cn.starteasy.core.common.domain.wrapper.StringWrapper;
 import cn.starteasy.core.common.domain.view.BizData4Page;
 import cn.starteasy.core.common.exception.BizException;
-import cn.starteasy.core.common.utils.RtnCodeEnum;
-import cn.starteasy.util.StringUtil;
+import cn.starteasy.core.common.protocol.utils.RtnCodeEnum;
 
+<#if table.sysTable>
+        import cn.starteasy.core.common.adminui.backend.domain.${className};
+<#else>
 import ${basepackage}.domain.${className};
-import ${mergePkgService}.I${className}Service;
+</#if>
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,12 +78,8 @@ public class Api${className}Controller{
                 throw new BizException(RtnCodeEnum.UNKNOW.getValue(), msg);
             }
 
-            int row=${classNameLower}Service.add(${classNameLower});
-            if(row > 0) {
-                return new StringWrapper( StringUtil.toString(${classNameLower}.getId()) );
-            }else{
-                throw new BizException(RtnCodeEnum.UNKNOW.getValue(), "新增${table.name}失败");
-            }
+            ${classNameLower}Service.create(${classNameLower});
+            return new BooleanWrapper(true);
         } catch (BizException bize) {
             throw bize;
         } catch (Exception e) {
@@ -97,12 +102,8 @@ public class Api${className}Controller{
             if(StringUtils.isBlank(${classNameLower}Id)){
                 throw new BizException(RtnCodeEnum.UNKNOW.getValue(), "删除${table.name}失败，参数不正确");
             }
-            int row=${classNameLower}Service.deleteByProperty("id", ${classNameLower}Id);
-            if(row > 0) {
-                return new StringWrapper( "删除${table.name}成功" );
-            }else{
-                throw new BizException(RtnCodeEnum.UNKNOW.getValue(), "删除${table.name}失败");
-            }
+            ${classNameLower}Service.deleteByCondition(ConditionBuilder.condition("id", SearchEnum.eq, ${classNameLower}Id));
+            return new BooleanWrapper(true);
         } catch (BizException bize) {
             throw bize;
         } catch (Exception e) {
@@ -147,7 +148,7 @@ public class Api${className}Controller{
                 throw new BizException(RtnCodeEnum.UNKNOW.getValue(), msg);
             }
 
-            ${className} ${classNameLower}_old = (${className}) ${classNameLower}Service.findOne("id",${classNameLower}Id);
+            ${className} ${classNameLower}_old = (${className}) ${classNameLower}Service.view(${classNameLower}.getId());
             if(${classNameLower}==null) {
                 throw new BizException(RtnCodeEnum.UNKNOW.getValue(), "修改失败，系统未找到相关数据");
             }
@@ -195,7 +196,7 @@ public class Api${className}Controller{
             }
             Map<String,Object> whereParams = new HashMap<String, Object>();
             whereParams.put("id", ${classNameLower}Id);
-            ${className} ${classNameLower}= (${className}) ${classNameLower}Service.queryOne(whereParams);
+            ${className} ${classNameLower}= (${className}) ${classNameLower}Service.viewOne(null, whereParams, null);
             if(null == ${classNameLower}){
                 throw new BizException(RtnCodeEnum.UNKNOW.getValue(), "系统未找到${table.name}相关数据！");
             }
@@ -239,14 +240,7 @@ public class Api${className}Controller{
             //other props filter
             whereParams.put("groupOp", "and");
 
-            BizData4Page bizData4Page = new BizData4Page();
-            bizData4Page.setConditions(whereParams);
-            if (page != null) {
-                bizData4Page.setPage(page);
-            }
-
-            ${classNameLower}Service.queryPageByDataPerm(bizData4Page);
-            return bizData4Page;
+        return ${classNameLower}Service.queryPage(null, whereParams, page, 10, 10, null);
         } catch (BizException bize) {
             throw bize;
         } catch (Exception e) {

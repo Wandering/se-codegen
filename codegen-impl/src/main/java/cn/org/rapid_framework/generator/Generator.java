@@ -181,7 +181,7 @@ public class Generator {
 
 			//内置表的逻辑处理
 			if(templateModel.get("table") != null && ((Table)templateModel.get("table")).isSysTable() && (srcFile.getPath().contains("/domain/") ||
-					srcFile.getPath().contains("/dao/") || srcFile.getPath().contains("/service/"))){
+					srcFile.getPath().contains("/dao/") || srcFile.getPath().contains("/service/") || srcFile.getPath().contains("/controller/api/"))){
 				continue;
 			}
 
