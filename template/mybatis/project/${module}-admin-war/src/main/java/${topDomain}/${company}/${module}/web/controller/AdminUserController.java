@@ -59,6 +59,7 @@ public class AdminUserController extends BaseController {
     private IRoleUserService iRoleUserService;
     @Autowired
     private IAdminUserService iAdminuserService;
+
     /**
      * 页面主请求
      *
@@ -85,13 +86,11 @@ public class AdminUserController extends BaseController {
         String rows = request.getParameter("rows");
         int currentPage = 1;
         int pageSize = 10;
-        if(!StringUtils.isEmpty(page))
-        {
+        if (!StringUtils.isEmpty(page)) {
             currentPage = Integer.valueOf(page);
         }
 
-        if(!StringUtils.isEmpty(rows))
-        {
+        if (!StringUtils.isEmpty(rows)) {
             pageSize = Integer.valueOf(rows);
         }
 
@@ -111,7 +110,6 @@ public class AdminUserController extends BaseController {
     @RequestMapping(value = "/commonsave/adminuser")
     public String save(HttpServletRequest request,
                        HttpServletResponse response, User user) {
-
 
 
         UserDomain currentUser = UserContext.getCurrentUser();
@@ -245,3 +243,4 @@ public class AdminUserController extends BaseController {
     public boolean getEnableDataPerm() {
         return true;
     }
+}
