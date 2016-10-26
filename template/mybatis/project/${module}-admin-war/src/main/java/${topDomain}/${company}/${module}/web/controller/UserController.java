@@ -222,7 +222,7 @@ public class UserController extends BaseController {
 
     @Override
     protected String getBizSys() {
-        return "lms";
+        return "${module}";
     }
 
     @Override

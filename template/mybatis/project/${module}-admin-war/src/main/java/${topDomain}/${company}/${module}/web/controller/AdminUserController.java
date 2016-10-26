@@ -109,7 +109,7 @@ public class AdminUserController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/commonsave/adminuser")
     public String save(HttpServletRequest request,
-                       HttpServletResponse response, User user) {
+                       HttpServletResponse response, AdminUser user) {
 
 
         UserDomain currentUser = UserContext.getCurrentUser();
@@ -128,7 +128,7 @@ public class AdminUserController extends BaseController {
      */
     @RequestMapping(value = "/commondel/adminuser")
     public ModelAndView delete(HttpServletRequest request,
-                               HttpServletResponse response, User user) {
+                               HttpServletResponse response, AdminUser user) {
 
         return doRenderMainView(request, response);
     }
@@ -221,7 +221,7 @@ public class AdminUserController extends BaseController {
 
     @Override
     protected String getBizSys() {
-        return "lms";
+        return "${module}";
     }
 
     @Override
