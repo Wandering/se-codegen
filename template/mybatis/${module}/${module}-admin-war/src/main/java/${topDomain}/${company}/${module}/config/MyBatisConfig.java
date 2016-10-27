@@ -61,6 +61,7 @@ public class MyBatisConfig implements TransactionManagementConfigurer {
     public SqlSessionFactory sqlSessionFactoryBean() {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
+        bean.setVfs(SpringBootVFS.class);
         bean.setTypeAliasesPackage(typeAliasesPackage);
 
 //        mapperScannerConfigurer.setBasePackage(mapperPackage);
