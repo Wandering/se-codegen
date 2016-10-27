@@ -1,5 +1,7 @@
 package ${basepackage}.security;
 
+import cn.starteasy.core.common.adminui.backend.domain.AdminUser;
+import cn.starteasy.core.common.utils.UserContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
