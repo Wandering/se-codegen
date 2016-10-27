@@ -35,6 +35,10 @@ public class GeneratorFacade {
 		g.setOutRootDir(GeneratorProperties.getProperty("outRoot"));
 	}
 
+	public GeneratorFacade(String outRoot){
+		g.setOutRootDir(outRoot);
+	}
+
 	public static void printAllTableNames() throws Exception {
 		PrintUtils.printAllTableNames(TableFactory.getInstance().getAllTables());
 	}

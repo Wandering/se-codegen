@@ -31,7 +31,7 @@
     <div>
         <div>
 
-            <h1 class="logo-name">H+</h1>
+            <h3 class="logo-name">如易云</h3>
 
         </div>
         <h3>欢迎使用 后台管理系统</h3>
