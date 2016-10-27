@@ -38,12 +38,12 @@
 
         <div class="m-t" >
             <div class="form-group">
-                <input type="Username" class="form-control" placeholder="用户名" required="">
+                <input type="username" id="Username"  class="form-control" placeholder="用户名" required="">
             </div>
             <div class="form-group">
-                <input type="Password" class="form-control" placeholder="密码" required="">
+                <input type="password" id="Password" class="form-control" placeholder="密码" required="">
             </div>
-            <button type="loginBtn" id="loginBtn" class="btn btn-primary block full-width m-b">登 录</button>
+            <button type="submit" id="loginBtn" class="btn btn-primary block full-width m-b">登 录</button>
 
 
             <p class="text-muted text-center"> <a href="login.html#"><small>忘记密码了？</small></a> | <a href="register.html">注册一个新账号</a>
@@ -176,6 +176,28 @@
                 return output;
             }
         }
+
+        $('#btn-login-dark').on('click', function (e) {
+            $('body').attr('class', 'login-layout');
+            $('#id-text2').attr('class', 'white');
+            $('#id-company-text').attr('class', 'blue');
+
+            e.preventDefault();
+        });
+        $('#btn-login-light').on('click', function (e) {
+            $('body').attr('class', 'login-layout light-login');
+            $('#id-text2').attr('class', 'grey');
+            $('#id-company-text').attr('class', 'blue');
+
+            e.preventDefault();
+        });
+        $('#btn-login-blur').on('click', function (e) {
+            $('body').attr('class', 'login-layout blur-login');
+            $('#id-text2').attr('class', 'white');
+            $('#id-company-text').attr('class', 'light-blue');
+
+            e.preventDefault();
+        });
 
     });
 </script>
