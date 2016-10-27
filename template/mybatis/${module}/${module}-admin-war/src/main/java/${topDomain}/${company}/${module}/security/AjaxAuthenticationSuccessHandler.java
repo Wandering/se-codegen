@@ -19,7 +19,10 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication)
         throws IOException, ServletException {
-
+        //获取用户信息
+        AdminUser adminUser=(AdminUser)authentication.getPrincipal();
+        //将用户信息放入用户上下文
+        UserContext.setCurrentUser(adminUser);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }

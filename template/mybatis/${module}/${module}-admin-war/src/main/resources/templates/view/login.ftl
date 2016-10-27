@@ -80,7 +80,7 @@
                     response.expires_at = expiredAt.getTime();
                     localStorage.setItem("authenticationToken", response);
 
-                    window.location.href = "admin/ucm/index";
+                    window.location.href = "admin/${module}/index";
                     return response;
                 }
             });
