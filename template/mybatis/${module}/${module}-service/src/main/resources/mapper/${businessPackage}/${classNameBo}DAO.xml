@@ -14,7 +14,7 @@
 </#if>
 
 <#if table.sysTable>
-<mapper namespace="cn.starteasy.core.common.adminui.backend.dao.I${className}Service">
+<mapper namespace="cn.starteasy.core.common.adminui.backend.dao.I${className}DAO">
 <#else>
     <#if hasBusinessPackage>
         <mapper namespace="${mergePkg}.${table.businessPackage}.I${className}DAO">

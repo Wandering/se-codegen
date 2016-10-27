@@ -10,8 +10,8 @@
 
     <entry key="topDomain">cn</entry>
     <entry key="company">starteasy</entry>
-    <entry key="module">lms</entry>
-    <entry key="biz">lms</entry>
+    <entry key="module">cloud</entry>
+    <entry key="biz">cloud</entry>
     <entry key="basepackage">${topDomain}.${company}.${module}</entry>
     <entry key="persistence">dao</entry>
 
@@ -45,7 +45,7 @@
 
     <!-- Mysql -->
     <!--<entry key="table.pre">dap</entry>-->
-    <entry key="jdbc.databasename">lms</entry>
+    <entry key="jdbc.databasename">secloud</entry>
     <entry key="jdbc.url">jdbc:mysql://127.0.0.1:3306/${jdbc.databasename}?useUnicode=true&amp;characterEncoding=UTF-8</entry>
     <entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>
     <entry key="jdbc.username">root</entry>

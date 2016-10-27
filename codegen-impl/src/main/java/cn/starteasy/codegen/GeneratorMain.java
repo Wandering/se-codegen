@@ -99,8 +99,8 @@ public class GeneratorMain {
             isCreateProject = false;
         }
 
-        admin_projectPath = outRoot + "/project/"+ module + "-admin-war";
-        webfront_projectPath = outRoot + "/project/"+ module + "-webfront";
+        admin_projectPath = outRoot + "/"+module+"/"+ module + "-admin-war";
+        webfront_projectPath = outRoot + "/"+module+"/"+ module + "-webfront";
 
         //拷贝静态文件  因为freemarker 不能 直接 生成
         //将  /template_static/admin-war 下的文件 拷贝到 admin-war/src/main下 然后将/template_static/webfront/static 拷贝到 admin-war/src/main/webapp/assets下
