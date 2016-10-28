@@ -170,7 +170,7 @@ public class TableFactory {
 			}
 
 			Table table = new Table();
-			table.setSqlName(realTableName);
+			table.setOriginSqlName(realTableName);
 			table.setRemarks(remarks);
 
             ParentRes parentRes = null;

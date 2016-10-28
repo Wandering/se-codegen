@@ -63,7 +63,7 @@ D
                 select replace(uuid(),'-','')
             </selectKey>
         </#if>
-        INSERT INTO ${table.sqlName} (
+        INSERT INTO ${table.originSqlName} (
         <#list table.columns as column>
         <#if "id"!=column || isSKey>
         ${column.sqlName}<#if column_has_next>,</#if>
@@ -89,7 +89,7 @@ D
 
 
     <insert id="insertMap" >
-        INSERT INTO ${table.sqlName} (
+        INSERT INTO ${table.originSqlName} (
         <#list table.columns as column>
         <#if "id"!=column || isSKey>
         ${column.sqlName}<#if column_has_next>,</#if>
@@ -112,7 +112,7 @@ D
     <!-- 修改 start-->
         <!-- 更新 -->
         <update id="update" parameterType="${className}">
-        UPDATE ${table.sqlName}
+        UPDATE ${table.originSqlName}
         <trim prefix="SET" suffixOverrides=",">
             <#list table.notPkColumns as column>
             <if test="${column.columnNameFirstLower}!=null">
@@ -127,7 +127,7 @@ D
         </update>
 
         <update id="updateMap">
-        UPDATE ${table.sqlName}
+        UPDATE ${table.originSqlName}
         <trim prefix="SET" suffixOverrides=",">
             <#list table.notPkColumns as column>
             <if test="map.${column.columnNameFirstLower}!=null">
@@ -140,7 +140,7 @@ D
         </update>
 
         <update id="updateByCondition">
-        UPDATE ${table.sqlName}
+        UPDATE ${table.originSqlName}
         <trim prefix="SET" suffixOverrides=",">
             <#list table.notPkColumns as column>
             <if test="update.${column.columnNameFirstLower}!=null">
@@ -159,7 +159,7 @@ D
         </update>
 
         <update id="updateByWhereSql">
-        UPDATE ${table.sqlName}
+        UPDATE ${table.originSqlName}
         <trim prefix="SET" suffixOverrides=",">
             <#list table.notPkColumns as column>
             <if test="update.${column.columnNameFirstLower}!=null">
@@ -177,7 +177,7 @@ D
 
 
         <update id="updateNull" parameterType="${className}">
-        UPDATE ${table.sqlName}
+        UPDATE ${table.originSqlName}
         <trim prefix="SET" suffixOverrides=",">
             <#list table.notPkColumns as column>
             ${column.sqlName} = <@mapperEl column.columnNameFirstLower/>,
@@ -194,7 +194,7 @@ D
         <select id="findOne" parameterType="${idJavaType}" resultType="${className}">
         SELECT
         <include refid="Base_Column_List" />
-        FROM ${table.sqlName}
+        FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <#list table.compositeIdColumns as column>
             AND ${column.sqlName} = <@mapperEl 'id'/>
@@ -205,7 +205,7 @@ D
         <select id="findAll" resultType="${className}">
         SELECT
         <include refid="Base_Column_List" />
-        FROM ${table.sqlName}
+        FROM ${table.originSqlName}
         </select>
 
         <!-- 查询 -->
@@ -224,7 +224,7 @@ D
         <include refid="Base_Column_List" />
         </if>
 
-                FROM ${table.sqlName}
+                FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
         <#list table.columns as column>
         <if test="condition.${column.columnNameFirstLower}!=null">
@@ -270,7 +270,7 @@ D
         <include refid="Base_Column_List" />
         </if>
 
-        FROM ${table.sqlName}
+        FROM ${table.originSqlName}
 
         <if test="nativeSql!=null">
         <@jspEl 'nativeSql' />
@@ -300,7 +300,7 @@ D
         <include refid="Base_Column_List" />
         </if>
 
-        FROM ${table.sqlName}
+        FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
         <#list table.columns as column>
         <if test="condition.${column.columnNameFirstLower}!=null">
@@ -345,7 +345,7 @@ D
             <include refid="Base_Column_List" />
         </if>
 
-        FROM ${table.sqlName}
+        FROM ${table.originSqlName}
 
         <if test="nativeSql!=null">
             <@jspEl 'nativeSql' />
@@ -384,7 +384,7 @@ D
         <if test="selector==null">
         <include refid="Base_Column_List" />
         </if>
-                FROM ${table.sqlName}
+                FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
         <#list table.columns as column>
         <if test="condition.${column.columnNameFirstLower}!=null">
@@ -431,7 +431,7 @@ D
         <if test="selector==null">
         <include refid="Base_Column_List" />
         </if>
-                FROM ${table.sqlName}
+                FROM ${table.originSqlName}
 
         <if test="nativeSql!=null">
         <@jspEl 'nativeSql' />
@@ -449,7 +449,7 @@ D
         </select>
 
         <select id="count" resultType="java.lang.Integer">
-        SELECT count(${table.idColumn.sqlName}) FROM ${table.sqlName}
+        SELECT count(${table.idColumn.sqlName}) FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <#list table.columns as column>
             <if test="condition.${column.columnNameFirstLower}!=null">
@@ -473,7 +473,7 @@ D
         </select>
 
         <select id="countByWhereSql" resultType="java.lang.Integer">
-        SELECT count(${table.idColumn.sqlName}) FROM ${table.sqlName}
+        SELECT count(${table.idColumn.sqlName}) FROM ${table.originSqlName}
         <if test="nativeSql!=null">
             <@jspEl 'nativeSql' />
         </if>
@@ -484,7 +484,7 @@ D
     <!-- 删除 start-->
     <!-- 按Id删除 -->
         <delete id="delete" parameterType="${idJavaType}">
-        DELETE FROM ${table.sqlName}
+        DELETE FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <#list table.compositeIdColumns as column>
             AND ${column.sqlName} = <@mapperEl 'id'/>
@@ -494,7 +494,7 @@ D
 
 
         <delete id="deleteByCondition" parameterType="java.util.Map">
-        DELETE FROM ${table.sqlName}
+        DELETE FROM ${table.originSqlName}
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <#list table.columns as column>
             <if test="${column.columnNameFirstLower}!=null">
@@ -505,7 +505,7 @@ D
         </delete>
 
         <delete id="deleteByWhereSql" parameterType="java.lang.String">
-        DELETE FROM ${table.sqlName}
+        DELETE FROM ${table.originSqlName}
         <if test="nativeSql!=null">
             <@jspEl 'nativeSql' />
         </if>
@@ -515,7 +515,7 @@ D
         </delete>
 
         <delete id="deleteAll" >
-        DELETE FROM ${table.sqlName}
+        DELETE FROM ${table.originSqlName}
         </delete>
 
 

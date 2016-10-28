@@ -54,6 +54,7 @@ public class Table implements java.io.Serializable,Cloneable {
 	}
 
 	String sqlName;
+	String originSqlName;
 	String remarks;
 	String className;
     String instanceName;
@@ -247,6 +248,15 @@ public class Table implements java.io.Serializable,Cloneable {
 	}
 	public void setSqlName(String sqlName) {
 		this.sqlName = sqlName;
+	}
+
+	public String getOriginSqlName() {
+		return originSqlName;
+	}
+
+	public void setOriginSqlName(String originSqlName) {
+		this.originSqlName = originSqlName;
+		this.sqlName = originSqlName;
 	}
 
 	public static String removeTableSqlNamePrefix(String sqlName) {
