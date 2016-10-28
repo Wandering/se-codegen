@@ -7,6 +7,7 @@
 <script src="../../assets/js/plugins/jqgrid/i18n/grid.locale-cnffe4.js?0820"></script>
 <script src="../../assets/js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
 <script src="../../assets/js/content.min.js?v=1.0.0"></script>
+<script src="../../assets/js/jquery.cookie.js"></script>
 
 
 <!-- biz js引入 -->
@@ -18,7 +19,7 @@
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
 
-        var gridUrl = '/admin/${r"${bizSys}/${mainObj}"}s';
+        var gridUrl = '/admin/${bizSys}/${mainObj}s';
         if (isExitsFunction("initGridUrl")) {
             gridUrl = initGridUrl();
         }
@@ -32,32 +33,32 @@
             rowList:[10, 20, 30],
 //            colNames: ["序号", "日期", "客户", "金额", "运费", "总额", "备注"],
             colNames:[
-                ${r"<#list cols as col>
+            <#list cols as col>
                 '${col.displayName}'
                 <#if col_has_next>
                     ,
                 </#if>
             </#list>
-            ],"}
-            colModel:[${r"<#list cols as col>
+            ],
+            colModel:[<#list cols as col>
                 {
-                 <#if col.colId?exists>name: '${col.colId}',</#if>
+                    <#if col.colId?exists>name: '${col.colId}',</#if>
                     <#if col.colId?exists>index: '${col.colId?if_exists}',</#if>
                     <#if col.width?exists>width:${col.width?if_exists},</#if>
                     sortable: false,
                     <#if col.editable?exists>editable: ${col.editable?if_exists},</#if>
-                    <#if col.edittype?exists>edittype:'${col.edittype?if_exists}',</#if>
+                    <#if col.edittype?exists>edittype: "${col.edittype?if_exists}",</#if>
                     <#if col.editrules?exists>editrules:${col.editrules?if_exists},</#if>
                     <#if col.editoptions?exists>editoptions:${col.editoptions?if_exists},</#if>
                     <#if col.formatter?exists>formatter:${col.formatter?if_exists},</#if>
                     <#if col.formatoptions?exists>formatoptions:${col.formatoptions?if_exists},</#if>
-                    <#if col.hide?exists>hidden:${(col.hide?if_exists==1)?string('true','false')}</#if>"}
+                    <#if col.hide?exists>hidden:${(col.hide?if_exists==1)?string('true','false')}</#if>
                 }
 
-        ${r"<#if col_has_next>"}
+                <#if col_has_next>
                     ,
-                ${r"</#if>"}
-    ${r"</#list>"}],
+                </#if>
+            </#list>],
             pager: pager_selector,
             jsonReader: {
                 root: "bizData.rows",
@@ -96,25 +97,25 @@
 
             },
             viewrecords: true,
-            caption: "${r"${title}"}",
+            caption: "${title}",
             add: true,
             edit: true,
             addtext: "Add",
             deltext:"Del",
         <#--addurl:  "/admin/${bizSys}/commonsave/${mainObj}",-->
             edittext: "Edit",
-            editurl:  "/admin/${r"${bizSys}/commonsave/${mainObj}"}",
-            delurl:  "/admin/${r"${bizSys}/commonsave/${mainObj}"}",
+            editurl:  "/admin/${bizSys}/commonsave/${mainObj}?_csrf="+$.cookie('CSRF-TOKEN'),
+            delurl:  "/admin/${bizSys}/commonsave/${mainObj}?_csrf="+$.cookie('CSRF-TOKEN'),
             hidegrid: false
         });
         $(grid_selector).setSelection(4, true);
         $(grid_selector).jqGrid('navGrid', pager_selector,
                 { 	//navbar options
-                    edit: ${r"${actions?seq_contains('edit')?string('true', 'false')}"}, //决定是否显示true
+                    edit: ${actions?seq_contains("edit")?string("true", "false")}, //决定是否显示true
 //                    editicon: 'ace-icon fa fa-pencil blue',
-                    add: ${r"${actions?seq_contains('add')?string('true', 'false')}"},
+                    add: ${actions?seq_contains("add")?string("true", "false")},
 //                    addicon: 'ace-icon fa fa-plus-circle purple',
-                    del: ${r"${actions?seq_contains'del')?string('true', 'false')}"},
+                    del: ${actions?seq_contains("del")?string("true", "false")},
 //                    delicon: 'ace-icon fa fa-trash-o red',
                     search: true,
 //                    searchicon: 'ace-icon fa fa-search orange',
@@ -418,7 +419,7 @@
         return ""
     }
 
-    ${r"<#if actions?if_exists?seq_contains('resource_assign')>"}
+    <#if actions?if_exists?seq_contains("resource_assign")>
     .navButtonAdd(pager_selector, {
         id: "add-resource-action",
         title: "分配资源",
@@ -430,7 +431,7 @@
                 return;
             }
 
-            var resourceUrl2 = "/admin/${r"${bizSys}/${mainObj}"}/getAllResources?roleId=" + currentGridId;
+            var resourceUrl2 = "/admin/${bizSys}/${mainObj}/getAllResources?roleId=" + currentGridId;
             $.get(resourceUrl2, {}, function (result) {
                 var setting = {
                     check: {
@@ -519,7 +520,7 @@
                         array.push(obj);
 
                     }
-                    var resource_submit_url = "/admin/${r"${bizSys}/${mainObj}"}/assign";
+                    var resource_submit_url = "/admin/${bizSys}/${mainObj}/assign";
                     $.post(resource_submit_url, {
                                 objId: currentGridId,
                                 resources: JSON.stringify(array)
@@ -538,6 +539,6 @@
         },
         position: "last"
     })
-    ${r"</#if>"}
+    </#if>
 </script>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>

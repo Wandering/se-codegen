@@ -105,6 +105,7 @@ public class GeneratorMain {
         //拷贝静态文件  因为freemarker 不能 直接 生成
         //将  /template_static/admin-war 下的文件 拷贝到 admin-war/src/main下 然后将/template_static/webfront/static 拷贝到 admin-war/src/main/webapp/assets下
         copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war", admin_projectPath+"/src/main");
+        copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war-view", admin_projectPath+"/src/main/resources/templates/view");
         copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront/static", admin_projectPath+"/src/main/webapp/assets");
 
 
