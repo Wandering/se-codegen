@@ -10,6 +10,7 @@ package ${basepackage}.web.controller;
 import cn.starteasy.core.common.adminui.controller.AbstractCommonController;
 import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;
 import cn.starteasy.core.common.adminui.controller.helpers.BaseServiceMaps;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
