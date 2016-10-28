@@ -1,11 +1,16 @@
 package ${basepackage}.web.controller;
 
+import cn.starteasy.core.common.adminui.backend.domain.AdminUser;
+import cn.starteasy.core.common.adminui.backend.domain.Role;
+import cn.starteasy.core.common.adminui.backend.service.IAdminUserService;
+import cn.starteasy.core.common.adminui.backend.service.IRoleService;
 import cn.starteasy.core.common.adminui.controller.helpers.MenuUtils;
 import cn.starteasy.core.common.domain.persistent.SearchEnum;
 import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
 import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
 import cn.starteasy.core.common.adminui.controller.helpers.ActionPermHelper;
 import cn.starteasy.core.common.adminui.backend.service.IResourceService;
+import cn.starteasy.core.common.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +31,8 @@ public class IndexController extends
     private IResourceService resourceService;
     @Autowired
     private ActionPermHelper actionPermHelper;
-
+    @Autowired
+    private IAdminUserService adminUserService;
     /**
      * 进入登陆页
      *
@@ -39,17 +45,22 @@ public class IndexController extends
     public ModelAndView index(HttpServletRequest request,
                               HttpServletResponse response) {
         ModelAndView mav = new ModelAndView(getMainObjName());
-
+        //从用户上下文读取用户id
+        Long userId = (Long) UserContext.getCurrentUser().getId();
+        //读取用户完整信息
+        AdminUser adminUser = adminUserService.view(userId);
+        //获取用户权限组菜单
         List resourceList = actionPermHelper.getResourcePerm();
+        //获取用户角色
+        Role role = actionPermHelper.getRoleByUserId(userId);
         mav.addObject("resources",  MenuUtils.getTreeMenu(resourceList));
-
-        List resourceGridList = this.resourceGridService.viewList(null, ConditionBuilder.condition("moduleName", SearchEnum.eq, getMainObjName()), null);
-        mav.addObject("cols", resourceGridList);
-
         mav.addObject("bizSys", getBizSys());
         mav.addObject("mainObj", getMainObjName());
-        mav.addObject("parentTitle", getParentTitle());
-        mav.addObject("title", getViewTitle());
+        //注入给module当前用户名、图片和权限名称
+        mav.addObject("username", adminUser.getLogin());
+        mav.addObject("photo", adminUser.getPhoto());
+        //用户拥有权限组时不可能为空
+        mav.addObject("power",role==null?"":role.getName());
         return mav;
     }
 

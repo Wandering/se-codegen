@@ -5,11 +5,11 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span><img alt="image" class="img-circle" src="../../assets/img/profile_small.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/profile_small.jpg" /></span>
+                    <span><img alt="image" class="img-circle" src="${photo?if_exists}" tppabs="http://www.zi-han.net/theme/hplus/img/profile_small.jpg" /></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                               <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                               <span class="block m-t-xs"><strong class="font-bold">${username?if_exists}</strong></span>
+                                <span class="text-muted text-xs block">${power?if_exists}<b class="caret"></b></span>
                                 </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -29,26 +29,26 @@
                 <div class="logo-element">H+
                 </div>
             </li>
-            <#list resources?if_exists as resource>
-                <li>
+        <#list resources?if_exists as resource>
+            <li>
                 <a href="#">
                     <i class="fa"></i>
                     <span class="nav-label">${resource.resource.name?if_exists}</span>
                     <span class="fa arrow"></span>
                 </a>
                 <#if resource.list?exists>
-                <ul class="nav nav-second-level">
+                    <ul class="nav nav-second-level">
 
                         <#list resource.list  as subresources>
                             <li>
-                            <a class="J_menuItem" href="${subresources.resource.url}">${subresources.resource.name}</a>
+                                <a class="J_menuItem" href="${subresources.resource.url}">${subresources.resource.name}</a>
                             </li>
                         </#list>
-                </ul>
+                    </ul>
                 </#if>
 
-                </li>
-            </#list>
+            </li>
+        </#list>
 
         </ul>
     </div>
