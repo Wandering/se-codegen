@@ -38,7 +38,7 @@ public class IndexController extends
             RequestMethod.POST})
     public ModelAndView index(HttpServletRequest request,
                               HttpServletResponse response) {
-        ModelAndView mav = new ModelAndView("module/" + getMainObjName());
+        ModelAndView mav = new ModelAndView(getMainObjName());
 
         List resourceList = actionPermHelper.getResourcePerm();
         mav.addObject("resources",  MenuUtils.getTreeMenu(resourceList));

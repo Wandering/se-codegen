@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
+ * Copyright (c) 2013-2014, starteasy Inc. All Rights Reserved.
  *
  * Project Name: cv
  * $Id:  AdminController.java 2015-01-27 15:38:37 $

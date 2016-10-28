@@ -39,9 +39,10 @@ CREATE TABLE `se_adminUser` (
 LOCK TABLES `se_adminuser` WRITE;
 /*!40000 ALTER TABLE `se_adminuser` DISABLE KEYS */;
 
+/** admin/admin  */
 INSERT INTO `se_adminUser` (`id`, `login`, `password`, `creator`, `createDate`, `lastModifier`, `lastModDate`, `status`, `phone`, `email`)
 VALUES
-	(3,'admin','$2a$10$wRRch8cNGkVCyG9Gp7SziOO0bPsa8I2LizeqzEciHD/1smnAacZrG',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+	(3,'admin','$2a$10$wRRch8cNGkVCyG9Gp7SziOJf89.3OHsSjhogcOQCrIt.bs/xgnBwi',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*!40000 ALTER TABLE `se_adminuser` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -84,9 +85,10 @@ CREATE TABLE `se_user` (
 LOCK TABLES `se_user` WRITE;
 /*!40000 ALTER TABLE `se_user` DISABLE KEYS */;
 
+/** user/user  */
 INSERT INTO `se_user` (`id`, `login`, `password`, `creator`, `createDate`, `lastModifier`, `lastModDate`, `status`, `phone`, `email`)
 VALUES
-	(3,'admin','$2a$10$wRRch8cNGkVCyG9Gp7SziOO0bPsa8I2LizeqzEciHD/1smnAacZrG',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+	(3,'user','$2a$10$wRRch8cNGkVCyG9Gp7SziOkK4jva.nRJse//9WJVYgkO.yLgZKHd.',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*!40000 ALTER TABLE `se_user` ENABLE KEYS */;
 UNLOCK TABLES;
