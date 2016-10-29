@@ -49,7 +49,7 @@
 
 
     <!-- 根据根据用户id获取用户所在权限名称 -->
-    <select id="getRoleByUserId" resultType="java.lang.String">
+    <select id="getRoleByUserId" resultType="Role">
         SELECT ro.* from ${module}_role ro where ro.id=(SELECT roleId from ${module}_role_user ru where ru.userId =  <@mapperEl 'userId'/> limit 1) limit 1
     </select>
 </mapper>
