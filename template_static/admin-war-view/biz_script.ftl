@@ -1,5 +1,3 @@
-
-
 <script src="../../assets/js/jquery.min.js?v=2.1.4"></script>
 <script src="../../assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="../../assets/js/bootstrap.min.js?v=3.3.6"></script>
@@ -7,7 +5,10 @@
 <script src="../../assets/js/plugins/jqgrid/i18n/grid.locale-cnffe4.js?0820"></script>
 <script src="../../assets/js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
 <script src="../../assets/js/content.min.js?v=1.0.0"></script>
-<script src="../../assets/js/jquery.cookie.js"></script>
+
+
+<script src="../../assets/js/fuelux/jquery.ztree.core-3.5.min.js"></script>
+<script src="../../assets/js/fuelux/jquery.ztree.excheck-3.5.min.js"></script>
 
 
 <!-- biz js引入 -->
@@ -15,6 +16,8 @@
 <script>
 
     $(document).ready(function () {
+
+        var cookie = getCookie("CSRF-TOKEN");
         $.jgrid.defaults.styleUI = "Bootstrap";
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
@@ -29,30 +32,29 @@
             height: 450,
             autowidth: true,
             shrinkToFit: true,
-            rowNum:20,
-            rowList:[10, 20, 30],
+            rowNum: 20,
+            rowList: [10, 20, 30],
 //            colNames: ["序号", "日期", "客户", "金额", "运费", "总额", "备注"],
-            colNames:[
+            colNames: [
             <#list cols as col>
                 '${col.displayName}'
                 <#if col_has_next>
                     ,
                 </#if>
-            </#list>
-            ],
-            colModel:[<#list cols as col>
+            </#list>],
+            colModel: [<#list cols as col>
                 {
-                    <#if col.colId?exists>name: '${col.colId}',</#if>
-                    <#if col.colId?exists>index: '${col.colId?if_exists}',</#if>
-                    <#if col.width?exists>width:${col.width?if_exists},</#if>
+                        <#if col.colId?exists>name: '${col.colId}',</#if>
+                        <#if col.colId?exists>index: '${col.colId?if_exists}',</#if>
+                        <#if col.width?exists>width:${col.width?if_exists},</#if>
                     sortable: false,
-                    <#if col.editable?exists>editable: ${col.editable?if_exists},</#if>
-                    <#if col.edittype?exists>edittype: "${col.edittype?if_exists}",</#if>
-                    <#if col.editrules?exists>editrules:${col.editrules?if_exists},</#if>
-                    <#if col.editoptions?exists>editoptions:${col.editoptions?if_exists},</#if>
-                    <#if col.formatter?exists>formatter:${col.formatter?if_exists},</#if>
-                    <#if col.formatoptions?exists>formatoptions:${col.formatoptions?if_exists},</#if>
-                    <#if col.hide?exists>hidden:${(col.hide?if_exists==1)?string('true','false')}</#if>
+                        <#if col.editable?exists>editable: ${col.editable?if_exists},</#if>
+                        <#if col.edittype?exists>edittype: "${col.edittype?if_exists}",</#if>
+                        <#if col.editrules?exists>editrules:${col.editrules?if_exists},</#if>
+                        <#if col.editoptions?exists>editoptions:${col.editoptions?if_exists},</#if>
+                        <#if col.formatter?exists>formatter:${col.formatter?if_exists},</#if>
+                        <#if col.formatoptions?exists>formatoptions:${col.formatoptions?if_exists},</#if>
+                        <#if col.hide?exists>hidden:${(col.hide?if_exists==1)?string('true','false')}</#if>
                 }
 
                 <#if col_has_next>
@@ -101,162 +103,402 @@
             add: true,
             edit: true,
             addtext: "Add",
-            deltext:"Del",
+            deltext: "Del",
         <#--addurl:  "/admin/${bizSys}/commonsave/${mainObj}",-->
             edittext: "Edit",
-            editurl:  "/admin/${bizSys}/commonsave/${mainObj}?_csrf="+$.cookie('CSRF-TOKEN'),
-            delurl:  "/admin/${bizSys}/commonsave/${mainObj}?_csrf="+$.cookie('CSRF-TOKEN'),
+            editurl: "/admin/${bizSys}/commonsave/${mainObj}?_csrf=" + cookie,
+            delurl: "/admin/${bizSys}/commonsave/${mainObj}?_csrf=" + cookie,
             hidegrid: false
         });
         $(grid_selector).setSelection(4, true);
-        $(grid_selector).jqGrid('navGrid', pager_selector,
-                { 	//navbar options
-                    edit: ${actions?seq_contains("edit")?string("true", "false")}, //决定是否显示true
+    $(grid_selector).jqGrid('navGrid', pager_selector,
+            { 	//navbar options
+                edit: ${actions?seq_contains("edit")?string("true", "false")}, //决定是否显示true
 //                    editicon: 'ace-icon fa fa-pencil blue',
-                    add: ${actions?seq_contains("add")?string("true", "false")},
+                add: ${actions?seq_contains("add")?string("true", "false")},
 //                    addicon: 'ace-icon fa fa-plus-circle purple',
-                    del: ${actions?seq_contains("del")?string("true", "false")},
+                del: ${actions?seq_contains("del")?string("true", "false")},
 //                    delicon: 'ace-icon fa fa-trash-o red',
-                    search: true,
+                search: true,
 //                    searchicon: 'ace-icon fa fa-search orange',
-                    refresh: true,
+                refresh: true,
 //                    refreshicon: 'ace-icon fa fa-refresh green',
-                    view: true,
+                view: true,
 //                    viewicon: 'ace-icon fa fa-search-plus grey'
-                },
-                {
-                    //edit record form
-                    closeAfterEdit: true,
-                    width: 700,
-                    recreateForm: true,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                        style_edit_form(form);
-                        if (isExitsFunction("enhanceBeforeShowForm")) { //如果有定义，执行之增强
-                            enhanceBeforeShowForm(form);
-                        }
-                    },
-                    onclickSubmit: function (params, postdata) {
-                        if (isExitsFunction("enhancePostData")) { //如果有定义，执行之增强
-                            postdata = enhancePostData(params, postdata);
-                        }
-                        return postdata;
-                    },
-                    afterSubmit: function (response, postdata) {
-                        var rst = response.responseText;
-                        if (null != rst && rst != undefined && rst != '') {
-                            var result = response.responseJSON;
-                            if (result.rtnCode != "0000000") {
-                                return [false, result.msg];
-                            }
-                        } else {
-                            return [false, '服务器内部错误!'];
-                        }
-                        return [true, ''];
+            },
+            {
+                //edit record form
+                closeAfterEdit: true,
+                width: 700,
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                    if (isExitsFunction("enhanceBeforeShowForm")) { //如果有定义，执行之增强
+                        enhanceBeforeShowForm(form);
                     }
                 },
-                {
-                    //new record form
-                    width: 700,
-                    closeAfterAdd: true,
-                    recreateForm: true,
-                    viewPagerButtons: false,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        //console.log(form);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                                .wrapInner('<div class="widget-header" />')
-                        style_edit_form(form);
-                        if (isExitsFunction("newBeforeShowForm")) { //如果有定义，执行之增强
-                            newBeforeShowForm(form);
+                onclickSubmit: function (params, postdata) {
+                    if (isExitsFunction("enhancePostData")) { //如果有定义，执行之增强
+                        postdata = enhancePostData(params, postdata);
+                    }
+                    return postdata;
+                },
+                afterSubmit: function (response, postdata) {
+                    var rst = response.responseText;
+                    if (null != rst && rst != undefined && rst != '') {
+                        var result = response.responseJSON;
+                        if (result.rtnCode != "0000000") {
+                            return [false, result.msg];
                         }
-                    },
-                    onclickSubmit: function (params, postdata) {
-                        if (isExitsFunction("enhancePostData")) { //如果有定义，执行之增强
-                            postdata = enhancePostData(params, postdata);
-                        }
-                        return postdata;
-                    },
-                    afterSubmit: function (response, postdata) {
-                        var rst = response.responseText;
-                        if (null != rst && rst != undefined && rst != '') {
-                            var result = response.responseJSON;
-                            if (result.rtnCode != "0000000") {
-                                return [false, result.msg];
-                            }
-                        } else {
-                            return [false, '服务器内部错误!'];
-                        }
-                        return [true, ''];
+                    } else {
+                        return [false, '服务器内部错误!'];
+                    }
+                    return [true, ''];
+                }
+            },
+            {
+                //new record form
+                width: 700,
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    //console.log(form);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                            .wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                    if (isExitsFunction("newBeforeShowForm")) { //如果有定义，执行之增强
+                        newBeforeShowForm(form);
                     }
                 },
-                {
-                    //delete record form
-                    recreateForm: true,
-                <#--url:"/admin/commondel/${mainObj}",-->
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        //console.log(form);
-                        if (form.data('styled')) return false;
+                onclickSubmit: function (params, postdata) {
+                    if (isExitsFunction("enhancePostData")) { //如果有定义，执行之增强
+                        postdata = enhancePostData(params, postdata);
+                    }
+                    return postdata;
+                },
+                afterSubmit: function (response, postdata) {
+                    var rst = response.responseText;
+                    if (null != rst && rst != undefined && rst != '') {
+                        var result = response.responseJSON;
+                        if (result.rtnCode != "0000000") {
+                            return [false, result.msg];
+                        }
+                    } else {
+                        return [false, '服务器内部错误!'];
+                    }
+                    return [true, ''];
+                }
+            },
+            {
+                //delete record form
+                recreateForm: true,
+            <#--url:"/admin/commondel/${mainObj}",-->
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    //console.log(form);
+                    if (form.data('styled')) return false;
 
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                        style_delete_form(form);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
 
-                        form.data('styled', true);
-                    },
-                    onClick: function (e) {
-                        alert(1);
-                    },
-                    afterSubmit: function (response, postdata) {
-                        var rst = response.responseText;
-                        if (null != rst && rst != undefined && rst != '') {
-                            var result = response.responseJSON;
-                            if (result.rtnCode != "0000000") {
-                                return [false, result.msg];
-                            }
-                        } else {
-                            return [false, '服务器内部错误!'];
+                    form.data('styled', true);
+                },
+                onClick: function (e) {
+                    alert(1);
+                },
+                afterSubmit: function (response, postdata) {
+                    var rst = response.responseText;
+                    if (null != rst && rst != undefined && rst != '') {
+                        var result = response.responseJSON;
+                        if (result.rtnCode != "0000000") {
+                            return [false, result.msg];
                         }
-                        return [true, ''];
+                    } else {
+                        return [false, '服务器内部错误!'];
                     }
+                    return [true, ''];
+                }
+            },
+            {
+                //search form
+                recreateForm: true,
+                afterShowSearch: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
                 },
-                {
-                    //search form
-                    recreateForm: true,
-                    afterShowSearch: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                        style_search_form(form);
-                    },
-                    afterRedraw: function () {
-                        style_search_filters($(this));
-                    }
-                    ,
-                    multipleSearch: true,
-                    /**
-                     multipleGroup:true,
-                     showQuery: true
-                     */
-                },
-                {
-                    //view record form
-                    recreateForm: true,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                    }
+                afterRedraw: function () {
+                    style_search_filters($(this));
                 }
                 ,
-                {
-                    //import record form
-                    recreateForm: true,
-                    beforeShowForm: function (e) {
-                        var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                    }
+                multipleSearch: true,
+                /**
+                 multipleGroup:true,
+                 showQuery: true
+                 */
+            },
+            {
+                //view record form
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                 }
-        )
+            }
+            ,
+            {
+                //import record form
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                }
+            }
+    )
+
+    <#if actions?if_exists?seq_contains("resource_assign")>
+    .navButtonAdd(pager_selector, {
+        id: "add-resource-action",
+        title: "分配资源",
+        caption: "",
+        buttonicon: "ace-icon fa fa-pencil blue",
+        onClickButton: function () {
+            if (typeof currentGridId == "undefined" || !currentGridId) {
+                alert("请选择一行！");
+                return;
+            }
+
+            var resourceUrl2 = "/admin/${bizSys}/${mainObj}/getAllResources?roleId=" + currentGridId;
+            $.get(resourceUrl2, {}, function (result) {
+                var setting = {
+                    check: {
+                        enable: true
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true
+                        },
+                        key: {
+                            name: "resourceName",
+                            children: "resourceInfos"
+                        }
+
+                    }
+                };
+                if ("0000000" != result.rtnCode) {
+                    alert("远程访问数据失败!");
+                    return;
+                }
+                result = result.bizData;
+                var zNodes = result;
+
+                for (var i = 0; i < result.length; i++) {
+                    var obj = result[i];
+                    if (obj.resourceInfos) {
+                        result[i].open = true;
+                    }
+
+                    var chidrens = obj.resourceInfos;
+                    for (var m = 0; m < chidrens.length; m++) {
+                        if (chidrens[m].roleId > 0) {
+                            result[i].checked = true
+                            chidrens[m].checked = true;
+                        }
+                        var third = chidrens[m].resourceInfos;
+                        for (var n = 0; n < third.length; n++) {
+                            if (third[n].roleId) {
+                                third[n].checked = true;
+                                chidrens[m].checked = true;
+                                result[i].checked = true
+                            }
+                        }
+
+
+                    }
+
+                }
+                var code;
+
+                function setCheck() {
+                    var zTree = $.fn.zTree.getZTreeObj("tree1"),
+                            py = $("#py").attr("checked") ? "p" : "",
+                            sy = $("#sy").attr("checked") ? "s" : "",
+                            pn = $("#pn").attr("checked") ? "p" : "",
+                            sn = $("#sn").attr("checked") ? "s" : "",
+                            type = {"Y": py + sy, "N": pn + sn};
+                    zTree.setting.check.chkboxType = type;
+                    showCode('setting.check.chkboxType = { "Y" : "' + type.Y + '", "N" : "' + type.N + '" };');
+                    var checked = zTree.getNodes()[0].checked;
+                }
+
+                function showCode(str) {
+                    if (!code) code = $("#code");
+                    code.empty();
+                    code.append("<li>" + str + "</li>");
+                }
+
+
+                var treeObj = $.fn.zTree.init($("#tree1"), setting, zNodes);
+                $("#sn").bind("change", setCheck);
+
+
+                $("#treeFixed-01").find("#sData").click(function () {
+                    var array = [];
+
+                    var nodes = treeObj.getCheckedNodes(true);
+                    for (var i = 0; i < nodes.length; i++) {
+                        var pid = nodes[i].parentResourceId;
+                        var resourceId = nodes[i].resourceId;
+                        var obj = {
+                            "parentResourceId": pid,
+                            "resourceId": resourceId
+                        }
+
+                        array.push(obj);
+
+                    }
+                    var resource_submit_url = "/admin/${bizSys}/${mainObj}/assign?_csrf=" + cookie;
+
+                    $.post(resource_submit_url, {
+                                objId: currentGridId,
+                                resources: JSON.stringify(array)
+                            }, function (result) {
+                                alert(result.bizData)
+                                $("#treeFixed-01").hide();
+                            }
+                    );
+
+                });
+
+
+                $("#treeFixed-01").find("#cData").click(function () {
+                    $("#treeFixed-01").hide();
+
+                });
+
+
+                $("#treeFixed-01").show();
+
+            });
+
+
+        },
+        position: "last"
+    })
+    </#if>
+
+
+
+    <#if actions?if_exists?seq_contains("role_assign")>
+            .navButtonAdd(pager_selector, {
+                id: "add-resource-action",
+                title: "分配角色",
+                caption: "",
+                buttonicon: "ace-icon fa fa-pencil blue",
+                onClickButton: function () {
+                    if (typeof currentGridId == "undefined" || !currentGridId) {
+                        alert("请选择一行！");
+                        return;
+                    }
+                    var resourceUrl2 = "/admin/${bizSys}/${mainObj}/getAllResources?userId=" + currentGridId;
+                    $.get(resourceUrl2, {}, function (result) {
+                        result = result.bizData;
+                        var setting = {
+                            check: {
+                                enable: true
+                            },
+                            data: {
+                                simpleData: {
+                                    enable: true
+                                },
+                                key: {
+                                    name: "resourceName",
+                                    children: "resourceInfos"
+                                }
+                            }
+                        };
+                        var zNodes = result;
+                        for (var i = 0; i < result.length; i++) {
+                            var obj = result[i];
+                            if (obj.userId > 0) {
+                                obj.checked = true;
+
+                            }
+
+                        }
+                        var code;
+
+                        function setCheck() {
+                            var zTree = $.fn.zTree.getZTreeObj("tree1"),
+                                    py = $("#py").attr("checked") ? "p" : "",
+                                    sy = $("#sy").attr("checked") ? "s" : "",
+                                    pn = $("#pn").attr("checked") ? "p" : "",
+                                    sn = $("#sn").attr("checked") ? "s" : "",
+                                    type = {"Y": py + sy, "N": pn + sn};
+                            zTree.setting.check.chkboxType = type;
+                            showCode('setting.check.chkboxType = { "Y" : "' + type.Y + '", "N" : "' + type.N + '" };');
+                        }
+
+                        function showCode(str) {
+                            if (!code) code = $("#code");
+                            code.empty();
+                            code.append("<li>" + str + "</li>");
+                        }
+
+
+                        var treeObj = $.fn.zTree.init($("#tree1"), setting, zNodes);
+                        $("#sn").bind("change", setCheck);
+
+
+                        $("#treeFixed-01").find("#sData").click(function () {
+                            var array = [];
+
+                            var nodes = treeObj.getCheckedNodes(true);
+                            for (var i = 0; i < nodes.length; i++) {
+                                var pid = nodes[i].parentResourceId;
+                                var resourceId = nodes[i].resourceId;
+                                var obj = {
+                                    "parentResourceId": pid,
+                                    "resourceId": resourceId
+                                }
+
+                                array.push(obj);
+
+                            }
+                            var resource_submit_url = "/admin/${bizSys}/${mainObj}/assign?_csrf=" + cookie;
+
+                            $.post(resource_submit_url, {
+                                        objId: currentGridId,
+                                        resources: JSON.stringify(array)
+                                    }, function (result) {
+                                        alert(result.bizData)
+                                        $("#treeFixed-01").hide();
+                                    }
+                            );
+
+                        });
+
+
+                        $("#treeFixed-01").find("#cData").click(function () {
+                            $("#treeFixed-01").hide();
+
+                        });
+
+                        $("#treeFixed-01").show();
+
+                    });
+
+
+                },
+                position: "last"
+            })
+
+    </#if>
+
         $(window).bind("resize", function () {
             var width = $(".jqGrid_wrapper").width();
             $(grid_selector).setGridWidth(width);
@@ -405,7 +647,7 @@
 
     function showImage(cellvalue, options, cell) {
         if (cellvalue) {
-            var strHtml = '<a href="'+ cellvalue +'" target="_blank"><img src="' + cellvalue + '" style="width: 100px"></a>'
+            var strHtml = '<a href="' + cellvalue + '" target="_blank"><img src="' + cellvalue + '" style="width: 100px"></a>'
             return strHtml;
         }
         return ""
@@ -413,132 +655,11 @@
 
     function subCellvalue(cellvalue, options, cell) {
         if (cellvalue) {
-            var strHtml = cellvalue.substring(0,50)+"...";
+            var strHtml = cellvalue.substring(0, 50) + "...";
             return strHtml;
         }
         return ""
     }
 
-    <#if actions?if_exists?seq_contains("resource_assign")>
-    .navButtonAdd(pager_selector, {
-        id: "add-resource-action",
-        title: "分配资源",
-        caption: "",
-        buttonicon: "ace-icon fa fa-pencil blue",
-        onClickButton: function () {
-            if (!currentGridId) {
-                alert("请选择一行！");
-                return;
-            }
-
-            var resourceUrl2 = "/admin/${bizSys}/${mainObj}/getAllResources?roleId=" + currentGridId;
-            $.get(resourceUrl2, {}, function (result) {
-                var setting = {
-                    check: {
-                        enable: true
-                    },
-                    data: {
-                        simpleData: {
-                            enable: true
-                        },
-                        key: {
-                            name: "resourceName",
-                            children: "resourceInfos"
-                        }
-
-                    }
-                };
-                if ("0000000" != result.rtnCode) {
-                    alert("远程访问数据失败!");
-                    return;
-                }
-                result = result.bizData;
-                var zNodes = result;
-
-                for (var i = 0; i < result.length; i++) {
-                    var obj = result[i];
-                    if (obj.resourceInfos) {
-                        result[i].open = true;
-                    }
-
-                    var chidrens = obj.resourceInfos;
-                    for (var m = 0; m < chidrens.length; m++) {
-                        if (chidrens[m].roleId > 0) {
-                            result[i].checked = true
-                            chidrens[m].checked = true;
-                        }
-                        var third = chidrens[m].resourceInfos;
-                        for (var n = 0; n < third.length; n++) {
-                            if (third[n].roleId) {
-                                third[n].checked = true;
-                                chidrens[m].checked = true;
-                                result[i].checked = true
-                            }
-                        }
-
-
-                    }
-
-                }
-                var code;
-
-                function setCheck() {
-                    var zTree = $.fn.zTree.getZTreeObj("tree1"),
-                            py = $("#py").attr("checked") ? "p" : "",
-                            sy = $("#sy").attr("checked") ? "s" : "",
-                            pn = $("#pn").attr("checked") ? "p" : "",
-                            sn = $("#sn").attr("checked") ? "s" : "",
-                            type = {"Y": py + sy, "N": pn + sn};
-                    zTree.setting.check.chkboxType = type;
-                    showCode('setting.check.chkboxType = { "Y" : "' + type.Y + '", "N" : "' + type.N + '" };');
-                    var checked = zTree.getNodes()[0].checked;
-                }
-
-                function showCode(str) {
-                    if (!code) code = $("#code");
-                    code.empty();
-                    code.append("<li>" + str + "</li>");
-                }
-
-
-                var treeObj = $.fn.zTree.init($("#tree1"), setting, zNodes);
-                $("#sn").bind("change", setCheck);
-
-
-                $("#treeFixed-01").find("#sData").click(function () {
-                    var array = [];
-
-                    var nodes = treeObj.getCheckedNodes(true);
-                    for (var i = 0; i < nodes.length; i++) {
-                        var pid = nodes[i].parentResourceId;
-                        var resourceId = nodes[i].resourceId;
-                        var obj = {
-                            "parentResourceId": pid,
-                            "resourceId": resourceId
-                        }
-
-                        array.push(obj);
-
-                    }
-                    var resource_submit_url = "/admin/${bizSys}/${mainObj}/assign";
-                    $.post(resource_submit_url, {
-                                objId: currentGridId,
-                                resources: JSON.stringify(array)
-                            }, function (result) {
-                                alert(result.bizData)
-                                $("#treeFixed-01").hide();
-                            }
-                    );
-
-                });
-                $("#treeFixed-01").show();
-
-            });
-
-
-        },
-        position: "last"
-    })
-    </#if>
 </script>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
