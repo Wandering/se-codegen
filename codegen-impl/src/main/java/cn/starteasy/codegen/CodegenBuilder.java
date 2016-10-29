@@ -17,11 +17,20 @@ public class CodegenBuilder {
         this.config = config;
     }
 
+    public static void main(String[] args) {
+        // 测试执行的话 生成到 当前工程下
+        CodegenConfig codegenConfig = new CodegenConfig();
+        codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
+
+        CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
+        codegenBuilder.build();
+    }
+
     public void build(){
         if(config.getModule() == null || config.getModule().trim().length() == 0){
             throw new RuntimeException("config's module 不能为空!");
         }
-        String appOutRoot = config.getGenRootDir() + config.getModule();
+        String appOutRoot = config.getGenRootDir() + "/" + config.getModule();
 
         //TODO  云端调度，生成对应的数据库 并返回连接信息
 
@@ -39,6 +48,7 @@ public class CodegenBuilder {
             //拷贝静态文件  因为freemarker 不能 直接 生成
             //将  /template_static/admin-war 下的文件 拷贝到 admin-war/src/main下 然后将/template_static/webfront/static 拷贝到 admin-war/src/main/webapp/assets下
             copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war", admin_projectPath+"/src/main");
+            copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war-view", admin_projectPath+"/src/main/resources/templates/view");
             copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront/static", admin_projectPath+"/src/main/webapp/assets");
 
 
@@ -72,7 +82,7 @@ public class CodegenBuilder {
         GeneratorProperties.setProperty("basepackage", config.makeBasePackage());
 
         GeneratorProperties.setProperty("jdbc.databasename", config.getModule());
-        GeneratorProperties.setProperty("jdbc.url", "jdbc:mysql://127.0.0.1:3306/" + config.getModule() + "?useUnicode=true&amp;characterEncoding=UTF-8");
+        GeneratorProperties.setProperty("jdbc.url", config.getDbUrl() + config.getModule() + "?useUnicode=true&amp;characterEncoding=UTF-8");
         GeneratorProperties.setProperty("jdbc.driver", "com.mysql.jdbc.Driver");
         GeneratorProperties.setProperty("jdbc.username", config.getDbUser());
         GeneratorProperties.setProperty("jdbc.password", config.getDbPassword());

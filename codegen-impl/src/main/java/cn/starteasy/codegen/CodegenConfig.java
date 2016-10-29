@@ -12,6 +12,7 @@ public class CodegenConfig {
     private String company = "starteasy";
     private String module = "sample";
 
+    private String dbUrl = "jdbc:mysql://127.0.0.1:3306/";
     private String dbUser = "root";
     private String dbPassword = "root";
 
@@ -54,6 +55,14 @@ public class CodegenConfig {
 
     public void setModule(String module) {
         this.module = module;
+    }
+
+    public String getDbUrl() {
+        return dbUrl;
+    }
+
+    public void setDbUrl(String dbUrl) {
+        this.dbUrl = dbUrl;
     }
 
     public String getDbUser() {
