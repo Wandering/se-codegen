@@ -51,3 +51,19 @@ VALUES('${table.seq}','/admin/${bizSys}/${classNameAllLower}','${table.seq}','${
   </#list>
 <#assign resourceId=resourceId+1/>
 </#list>
+
+--更新内置列不可编辑
+update ${module}_resource_grid SET editable ="false" where colId="createDate" ;
+update ${module}_resource_grid SET editable = "false" where colId="creator" ;
+update ${module}_resource_grid SET editable = "false" where colId="lastModifier" ;
+update ${module}_resource_grid SET editable = "false" where colId="lastModDate" ;
+update ${module}_resource_grid SET editable = "false" where colId="status" ;
+
+
+---初始化数据 值执行一次
+INSERT INTO `${module}_role` (`id`,`name`,`description`) VALUES(1, 'admin', '管理员');
+
+INSERT INTO `${module}_role_user` (`id`,`userId`,`roleId`) VALUES(1, 1, 1);
+
+insert into lms_role_resource(`resourceId`, `resourceActionId`, `roleId`)
+select r.id, ra.id, 1 from lms_resource as r, `lms_resource_action` ra;

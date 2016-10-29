@@ -10,7 +10,9 @@ package ${basepackage}.web.controller;
 import cn.starteasy.core.common.adminui.backend.domain.dto.AssignDTO;
 import cn.starteasy.core.common.adminui.backend.domain.dto.AssignDetailDTO;
 import cn.starteasy.core.common.adminui.backend.domain.dto.RoleDTO;
-        import cn.starteasy.core.common.adminui.backend.service.IAdminUserService;
+import cn.starteasy.core.common.adminui.backend.service.IAdminUserService;
+import cn.starteasy.core.common.domain.persistent.SearchEnum;
+import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
 import cn.starteasy.core.common.domain.UserDomain;
 import cn.starteasy.core.common.domain.view.BizData4Page;
 import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
@@ -95,7 +97,7 @@ public class AdminUserController extends BaseController {
             pageSize = Integer.valueOf(rows);
         }
 
-        return iAdminuserService.queryPage(null, Maps.newHashMap(), currentPage, pageSize, pageSize, null);
+        return iAdminuserService.queryPage(null, Maps.newHashMap(), currentPage, (currentPage-1)*pageSize, pageSize, null);
     }
 
 

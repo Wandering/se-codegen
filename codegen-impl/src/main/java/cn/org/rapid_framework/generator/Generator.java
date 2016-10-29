@@ -218,6 +218,13 @@ public class Generator {
                     }
                 }
             } else {
+				//AdminUserController 和 RoleController   用特定类，不通用生成
+				if(srcFile.getName().endsWith("Controller.java") && (
+						"adminuser".equals(((Table)templateModel.get("table")).getInstanceName().toLowerCase())
+						|| "role".equals(((Table)templateModel.get("table")).getInstanceName().toLowerCase()))){
+
+					continue;
+				}
                 try {
 					if(GeneratorMain.isStandard) {
 						if (isDelete) {
