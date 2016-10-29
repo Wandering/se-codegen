@@ -134,7 +134,6 @@ public class AdminUserController extends BaseController {
         return doRenderMainView(request, response);
     }
 
-
     /**
      * 获取所有角色资源
      *
@@ -149,7 +148,7 @@ public class AdminUserController extends BaseController {
                                         HttpServletResponse response) {
 
         String userId = request.getParameter("userId");
-        List<Role> roles = iRoleService.viewList(null, null, null);
+        List<Role> roles = iRoleService.viewList(null, new HashMap<>(), null);
         List<RoleDTO> roleDTOs = Lists.newArrayList();
 
         for (Role role : roles) {
@@ -158,11 +157,15 @@ public class AdminUserController extends BaseController {
             roleDTO.setResourceId(role.getId());
             roleDTO.setResourceName(role.getName());
 
-            Map<String, Object> map = new HashMap<>();
-            map.put("userId", userId);
-            map.put("roleId", role.getId());
+            ConditionBuilder conditionBuilder = new ConditionBuilder();
+            conditionBuilder.and("userId", SearchEnum.eq, userId);
+            conditionBuilder.and("roleId", SearchEnum.eq, role.getId());
 
-            RoleUser roleUser = iRoleUserService.viewOne(null, map, null);
+            // 说明该权限属于该角色
+            Map<String, Object> param = conditionBuilder.build();
+            param.put("groupOp", "and");
+
+            RoleUser roleUser = iRoleUserService.viewOne(null, param, null);
             if (roleUser != null) {
                 roleDTO.setUserId(Long.valueOf(roleUser.getUserId().toString()));
             }

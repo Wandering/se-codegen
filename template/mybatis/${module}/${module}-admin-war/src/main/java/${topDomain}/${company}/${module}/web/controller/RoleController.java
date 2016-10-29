@@ -7,36 +7,36 @@
 
 package ${basepackage}.web.controller;
 
-import cn.starteasy.core.common.domain.persistent.SearchEnum;
-import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
-import cn.starteasy.core.common.domain.view.BizData4Page;
-import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
-import cn.starteasy.core.common.adminui.backend.domain.Resource;
-import cn.starteasy.core.common.adminui.backend.domain.ResourceAction;
-import cn.starteasy.core.common.adminui.backend.domain.RoleResource;
-import cn.starteasy.core.common.adminui.backend.service.IResourceActionService;
-import cn.starteasy.core.common.adminui.backend.service.IResourceService;
-import cn.starteasy.core.common.adminui.backend.service.IRoleResourceService;
-import cn.starteasy.core.common.adminui.backend.service.IRoleService;
-import cn.starteasy.core.common.utils.UserContext;
-import cn.starteasy.core.common.adminui.backend.domain.dto.AssignDTO;
-import cn.starteasy.core.common.adminui.backend.domain.dto.AssignDetailDTO;
-import cn.starteasy.core.common.adminui.backend.domain.dto.ResourceDTO;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+        import cn.starteasy.core.common.domain.persistent.SearchEnum;
+        import cn.starteasy.core.common.domain.persistent.utils.ConditionBuilder;
+        import cn.starteasy.core.common.domain.view.BizData4Page;
+        import cn.starteasy.core.common.adminui.controller.AbstractAdminController;
+        import cn.starteasy.core.common.adminui.backend.domain.Resource;
+        import cn.starteasy.core.common.adminui.backend.domain.ResourceAction;
+        import cn.starteasy.core.common.adminui.backend.domain.RoleResource;
+        import cn.starteasy.core.common.adminui.backend.service.IResourceActionService;
+        import cn.starteasy.core.common.adminui.backend.service.IResourceService;
+        import cn.starteasy.core.common.adminui.backend.service.IRoleResourceService;
+        import cn.starteasy.core.common.adminui.backend.service.IRoleService;
+        import cn.starteasy.core.common.utils.UserContext;
+        import cn.starteasy.core.common.adminui.backend.domain.dto.AssignDTO;
+        import cn.starteasy.core.common.adminui.backend.domain.dto.AssignDetailDTO;
+        import cn.starteasy.core.common.adminui.backend.domain.dto.ResourceDTO;
+        import com.google.common.collect.Lists;
+        import org.apache.commons.lang3.StringUtils;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.ResponseBody;
+        import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
 
-import ${basepackage}.web.controller.BaseController;
+        import ${basepackage}.web.controller.BaseController;
 
 @Controller
 @RequestMapping(value = "/admin/${module}")
@@ -77,7 +77,6 @@ public class RoleController extends BaseController<IRoleService> {
         return doPage(request, response);
     }
 
-
     /**
      * 给角色分配资源
      *
@@ -95,6 +94,8 @@ public class RoleController extends BaseController<IRoleService> {
         // 首页删除该角色的所有权限
         Map<String, Object> map = new HashMap<>();
         map.put("roleId", assign.getObjId());
+
+
         roleResourceService.deleteByCondition(map);
 
         // 保存新的角色
@@ -147,7 +148,7 @@ public class RoleController extends BaseController<IRoleService> {
 
         // 获取所有父辈级菜单
         List<Resource> parentResources = resourceService
-                .viewList(null, ConditionBuilder.condition("parentId", SearchEnum.eq,0), null);
+                .viewList(null, ConditionBuilder.condition("parentId", SearchEnum.eq, 0), null);
 
         for (Resource resource : parentResources) {
             ResourceDTO resourceDTO = new ResourceDTO();
@@ -156,7 +157,7 @@ public class RoleController extends BaseController<IRoleService> {
             resourceDTO.setResourceId(resource.getId());
             resourceDTO.setResourceName(resource.getName());
 
-            List<Resource> childrens = resourceService.viewList(null, ConditionBuilder.condition("parentId", SearchEnum.eq,resource.getId()), null);
+            List<Resource> childrens = resourceService.viewList(null, ConditionBuilder.condition("parentId", SearchEnum.eq, resource.getId()), null);
 
             // 获取action
 
@@ -168,18 +169,20 @@ public class RoleController extends BaseController<IRoleService> {
                 childrenDTO.setResourceId(children.getId());
                 childrenDTO.setResourceName(children.getName());
 
-                List<ResourceAction> actions = resourceActionService.viewList(null, ConditionBuilder.condition("parentId", SearchEnum.eq,children.getId()), null);
+                List<ResourceAction> actions = resourceActionService.viewList(null, ConditionBuilder.condition("resourceId", SearchEnum.eq, children.getId()), null);
 
 
                 for (ResourceAction action : actions) {
                     //获取三级资源
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("roleId", roleId);
-                    map.put("resourceActionId", action.getId());
-                    map.put("resourceId", action.getResourceId());
+                    ConditionBuilder conditionBuilder = new ConditionBuilder();
+                    conditionBuilder.and("roleId", SearchEnum.eq, roleId);
+                    conditionBuilder.and("resourceActionId", SearchEnum.eq, action.getId());
+                    conditionBuilder.and("resourceId", SearchEnum.eq, action.getResourceId());
 
                     // 说明该权限属于该角色
-                    RoleResource rr = roleResourceService.viewOne(null, map, null);
+                    Map<String, Object> param = conditionBuilder.build();
+                    param.put("groupOp", "and");
+                    RoleResource rr = roleResourceService.viewOne(null, param, null);
 
                     ResourceDTO actionDTO = new ResourceDTO();
                     if (rr != null) {
