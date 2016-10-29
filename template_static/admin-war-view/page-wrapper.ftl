@@ -1,10 +1,13 @@
 <div id="page-wrapper" class="gray-bg dashbard-1">
     <div class="row border-bottom">
         <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                <form role="search" class="navbar-form-custom" method="post" action="http://www.zi-han.net/theme/hplus/search_results.html">
+            <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i
+                    class="fa fa-bars"></i> </a>
+                <form role="search" class="navbar-form-custom" method="post"
+                      action="http://www.zi-han.net/theme/hplus/search_results.html">
                     <div class="form-group">
-                        <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
+                        <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search"
+                               id="top-search">
                     </div>
                 </form>
             </div>
@@ -16,8 +19,10 @@
                     <ul class="dropdown-menu dropdown-messages">
                         <li class="m-t-xs">
                             <div class="dropdown-messages-box">
-                                <a href="profile.html" tppabs="http://www.zi-han.net/theme/hplus/profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="img/a7.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a7.jpg">
+                                <a href="profile.html" tppabs="http://www.zi-han.net/theme/hplus/profile.html"
+                                   class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a7.jpg"
+                                         tppabs="http://www.zi-han.net/theme/hplus/img/a7.jpg">
                                 </a>
                                 <div class="media-body">
                                     <small class="pull-right">46小时前</small>
@@ -30,8 +35,10 @@
                         <li class="divider"></li>
                         <li>
                             <div class="dropdown-messages-box">
-                                <a href="profile.html" tppabs="http://www.zi-han.net/theme/hplus/profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="img/a4.jpg" tppabs="http://www.zi-han.net/theme/hplus/img/a4.jpg">
+                                <a href="profile.html" tppabs="http://www.zi-han.net/theme/hplus/profile.html"
+                                   class="pull-left">
+                                    <img alt="image" class="img-circle" src="img/a4.jpg"
+                                         tppabs="http://www.zi-han.net/theme/hplus/img/a4.jpg">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right text-navy">25小时前</small>
@@ -44,7 +51,8 @@
                         <li class="divider"></li>
                         <li>
                             <div class="text-center link-block">
-                                <a class="J_menuItem" href="mailbox.html" tppabs="http://www.zi-han.net/theme/hplus/mailbox.html">
+                                <a class="J_menuItem" href="mailbox.html"
+                                   tppabs="http://www.zi-han.net/theme/hplus/mailbox.html">
                                     <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
                                 </a>
                             </div>
@@ -76,7 +84,8 @@
                         <li class="divider"></li>
                         <li>
                             <div class="text-center link-block">
-                                <a class="J_menuItem" href="notifications.html" tppabs="http://www.zi-han.net/theme/hplus/notifications.html">
+                                <a class="J_menuItem" href="notifications.html"
+                                   tppabs="http://www.zi-han.net/theme/hplus/notifications.html">
                                     <strong>查看所有 </strong>
                                     <i class="fa fa-angle-right"></i>
                                 </a>
@@ -85,7 +94,8 @@
                     </ul>
                 </li>
                 <li class="hidden-xs">
-                    <a href="index_v1.html" tppabs="http://www.zi-han.net/theme/hplus/index_v1.html" class="J_menuItem" data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
+                    <a href="index_v1.html" tppabs="http://www.zi-han.net/theme/hplus/index_v1.html" class="J_menuItem"
+                       data-index="0"><i class="fa fa-cart-arrow-down"></i> 购买</a>
                 </li>
                 <li class="dropdown hidden-xs">
                     <a class="right-sidebar-toggle" aria-expanded="false">
@@ -119,13 +129,18 @@
                 </li>
             </ul>
         </div>
-        <a href="../../login.html" tppabs="http://www.zi-han.net/theme/hplus/login.html" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+        <a href="../../login.html" tppabs="http://www.zi-han.net/theme/hplus/login.html"
+           class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
     </div>
     <div class="row J_mainContent" id="content-main">
-        <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v1.html-v=4.0.htm" tppabs="http://www.zi-han.net/theme/hplus/index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+        <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index"
+                tppabs="http://www.zi-han.net/theme/hplus/index_v1.html?v=4.0" frameborder="0" data-id="index_v1.html"
+                seamless></iframe>
     </div>
     <div class="footer">
-        <div class="pull-right">&copy; 2014-2015 <a href="javascript:if(confirm(%27http://www.zi-han.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.zi-han.net/%27" tppabs="http://www.zi-han.net/" target="_blank">zihan's blog</a>
+        <div class="pull-right">&copy; 2014-2015 <a
+                href="javascript:if(confirm(%27http://www.zi-han.net/  \n\nThis file was not retrieved by Teleport Pro, because it is addressed on a domain or path outside the boundaries set for its Starting Address.  \n\nDo you want to open it from the server?%27))window.location=%27http://www.zi-han.net/%27"
+                tppabs="http://www.zi-han.net/" target="_blank">zihan's blog</a>
         </div>
     </div>
 </div>
