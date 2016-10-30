@@ -22,6 +22,10 @@ public class CodegenBuilder {
         CodegenConfig codegenConfig = new CodegenConfig();
         codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
 
+        codegenConfig.setDbUrl("jdbc:mysql://repo.startupeasy.cn:33060/");
+        codegenConfig.setDbUser("soeasy");
+        codegenConfig.setDbPassword("S0easy");
+
         CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
         codegenBuilder.build();
     }
