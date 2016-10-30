@@ -23,7 +23,6 @@ import cn.org.rapid_framework.generator.util.GLogger;
 import cn.org.rapid_framework.generator.util.GeneratorException;
 import cn.org.rapid_framework.generator.util.IOHelper;
 import cn.org.rapid_framework.generator.util.StringHelper;
-import cn.starteasy.codegen.GeneratorMain;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.template.Configuration;
@@ -188,7 +187,7 @@ public class Generator {
             if(isCommon){  //只执行DAO.xml模板   **Controller.java   ***.ftl  （managerui-startup中不需要这些特定的模板）
                 if(srcFile.getName().endsWith("DAO.xml") || srcFile.getName().endsWith(".ftl") || (srcFile.getName().endsWith("Controller.java") && !srcFile.getName().endsWith("CommonController.java"))){
                     try {
-						if(GeneratorMain.isStandard) {
+						if(true) {
 							if (isDelete) {
 								new TemplateProcessor().executeDelete(templateRootDir, templateModel, filePathModel, srcFile);
 							} else {
@@ -226,7 +225,7 @@ public class Generator {
 					continue;
 				}
                 try {
-					if(GeneratorMain.isStandard) {
+					if(true) {
 						if (isDelete) {
 							new TemplateProcessor().executeDelete(templateRootDir, templateModel, filePathModel, srcFile);
 						} else {

@@ -19,7 +19,7 @@ import cn.org.rapid_framework.generator.provider.db.table.model.util.NumGen;
 import cn.org.rapid_framework.generator.provider.db.table.model.util.SeqGen;
 import cn.org.rapid_framework.generator.util.*;
 import cn.org.rapid_framework.generator.util.XMLHelper.NodeData;
-import cn.starteasy.codegen.GeneratorMain;
+
 
 /**
  * 
@@ -176,7 +176,7 @@ public class TableFactory {
             ParentRes parentRes = null;
             if(remarks != null && remarks.length() > 0){
 				String[] comments = null;
-				if(GeneratorMain.isStandard) {
+				if(true) {
 					String[] lines = remarks.split("\\n");
 					table.setDescription(lines[1]);
 					comments = lines[0].split("\\|");
@@ -278,7 +278,7 @@ public class TableFactory {
             for(Table table : tables){
                 table.setSeq(SeqGen.incr(SeqGen.MODEL));
                 table.setNumber(NumGen.genNum(table.getSeq()));
-				if(GeneratorMain.isStandard) {
+				if(true) {
 					table.setLongnumber(parentResMap.get(table.getParentResName()).getNumber() + "_" + table.getNumber());
 					table.setParentId(parentResMap.get(table.getParentResName()).getSeq());
 				}
@@ -362,7 +362,7 @@ public class TableFactory {
 				}
 				table.setSeq(SeqGen.incr(SeqGen.MODEL));
 				table.setNumber(NumGen.genNum(table.getSeq()));
-				if(GeneratorMain.isStandard) {
+				if(true) {
 					table.setLongnumber(parentResMap.get(table.getParentResName()).getNumber() + "_" + table.getNumber());
 					table.setParentId(parentResMap.get(table.getParentResName()).getSeq());
 				}
@@ -443,7 +443,7 @@ public class TableFactory {
 			ParentRes parentRes = null;
 			if(remarks != null && remarks.length() > 0){
 				String[] comments = null;
-				if(GeneratorMain.isStandard) {
+				if(true) {
 					String[] lines = remarks.split("\\n");
 					table.setDescription(lines[1]);
 					comments = lines[0].split("\\|");
