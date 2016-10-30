@@ -1,5 +1,5 @@
 # ===================================================================
-# Spring Boot configuration for the "prod" profile.
+# Spring Boot configuration for the "dev" profile.
 #
 # This configuration overrides the application.yml file.
 # ===================================================================
@@ -14,60 +14,56 @@
 spring:
     devtools:
         restart:
-            enabled: false
+            enabled: true
         livereload:
-            enabled: false
-    datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/jhipsterGradleSampleApplication?useUnicode=true&characterEncoding=utf8&useSSL=false
-        name:
-        username: root
-        password:
-        hikari:
-            data-source-properties:
-                cachePrepStmts: true
-                prepStmtCacheSize: 250
-                prepStmtCacheSqlLimit: 2048
-                useServerPrepStmts: true
+            enabled: false # we use gulp + BrowserSync for livereload
+    jackson:
+        serialization.indent_output: true
+#    datasource:
+#        type: com.zaxxer.hikari.HikariDataSource
+#        url: jdbc:h2:mem:jhipstergradlesampleapplication;DB_CLOSE_DELAY=-1
+#        name:
+#        username: jhipsterGradleSampleApplication
+#        password:
+#    h2:
+#        console:
+#            enabled: false
     jpa:
-        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        database: MYSQL
-        show-sql: false
+        database-platform: io.github.jhipster.sample.domain.util.FixedH2Dialect
+        database: H2
+        show-sql: true
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: false
+            hibernate.generate_statistics: true
             hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
         host: localhost
         port: 25
         username:
         password:
+    messages:
+        cache-seconds: 1
     thymeleaf:
-        cache: true
+        cache: false
+    profiles:
+        include: swagger # automatically set the 'swagger' profile
 
-liquibase:
-    contexts: prod
+#liquibase:
+#    contexts: dev
 
 server:
     port: 8080
-    compression:
-        enabled: true
-        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
-        min-response-size: 1024
 
 # ===================================================================
 # JHipster specific properties
 # ===================================================================
 
 jhipster:
-    http:
-        cache: # Used by the CachingHttpHeadersFilter
-            timeToLiveInDays: 1461
     cache: # Hibernate 2nd level cache, used by CacheConfiguration
         timeToLiveSeconds: 3600
         ehcache:
-            maxBytesLocalHeap: 256M
+            maxBytesLocalHeap: 16M
     security:
         rememberMe:
             # security key (this key should be unique for your application, and kept secret)
