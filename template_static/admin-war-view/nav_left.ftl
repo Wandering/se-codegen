@@ -5,7 +5,7 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span><img alt="image" class="img-circle" src="${photo?if_exists}" tppabs="http://www.zi-han.net/theme/hplus/img/profile_small.jpg" /></span>
+                    <span><img alt="image" class="img-circle" src="${photo?default('../../assets/img/profile_small.jpg')}" /></span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                <span class="block m-t-xs"><strong class="font-bold">${username?if_exists}</strong></span>
