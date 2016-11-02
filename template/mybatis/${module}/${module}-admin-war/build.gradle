@@ -8,6 +8,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-freemarker:$springbootVersion"
 
     compile "cn.starteasy.core.common:se-admin-common:$seCommonVersion"
+    compile "com.qiniu:qiniu-java-sdk:$qiniu_version"
 
     compile project(':${module}-service')
     compile project(':${module}-domain')
