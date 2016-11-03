@@ -12,9 +12,9 @@ public class CodegenConfig {
     private String company = "starteasy";
     private String module = "sample";
 
-    private String dbUrl = "jdbc:mysql://127.0.0.1:3306/";
-    private String dbUser = "root";
-    private String dbPassword = "root";
+    private String dbUrl = "jdbc:mysql://repo.startupeasy.cn:33060/";
+    private String dbUser = "soeasy";
+    private String dbPassword = "S0easy";
 
     public String getGenRootDir() {
         return genRootDir;

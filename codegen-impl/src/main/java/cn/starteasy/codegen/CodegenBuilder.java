@@ -2,10 +2,23 @@ package cn.starteasy.codegen;
 
 import cn.org.rapid_framework.generator.GeneratorFacade;
 import cn.org.rapid_framework.generator.GeneratorProperties;
+import cn.org.rapid_framework.generator.provider.db.DataSourceProvider;
+import com.google.common.collect.Maps;
 import com.google.common.io.Files;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by qyang on 2016/10/27.
@@ -22,23 +35,38 @@ public class CodegenBuilder {
         CodegenConfig codegenConfig = new CodegenConfig();
         codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
 
-        codegenConfig.setDbUrl("jdbc:mysql://repo.startupeasy.cn:33060/");
-        codegenConfig.setDbUser("soeasy");
-        codegenConfig.setDbPassword("S0easy");
+        //local codegen
+        codegenConfig.setModule("uaa");
 
         CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
-        codegenBuilder.build();
+        codegenBuilder.build(false);
+
+
+//        //online test
+//        codegenConfig.setModule("onlinetest");
+//
+//        CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
+//        codegenBuilder.build(true);
     }
 
-    public void build(){
+    /**
+     *
+     * @param isOnline true 在线服务,会生成数据库和表
+     */
+    public void build(boolean isOnline){
         if(config.getModule() == null || config.getModule().trim().length() == 0){
             throw new RuntimeException("config's module 不能为空!");
         }
         String appOutRoot = config.getGenRootDir() + "/" + config.getModule();
 
-        //TODO  云端调度，生成对应的数据库 并返回连接信息
-
+        //1.
         initProps();
+
+        //2. 云端调度，生成对应的数据库 并返回连接信息
+        if(isOnline) {
+            initDatabase(config);
+        }
+
         GeneratorFacade generatorFacade = new GeneratorFacade(appOutRoot);
         try {
             //清理之前的生成， TODO  备份之前的生成
@@ -90,6 +118,76 @@ public class CodegenBuilder {
         GeneratorProperties.setProperty("jdbc.driver", "com.mysql.jdbc.Driver");
         GeneratorProperties.setProperty("jdbc.username", config.getDbUser());
         GeneratorProperties.setProperty("jdbc.password", config.getDbPassword());
+    }
+
+    private void initDatabase(CodegenConfig codegenConfig) {
+        String tempStore = GeneratorProperties.getRequiredProperty("jdbc.url");
+
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            conn = DataSourceProvider.getSchemaConnection();
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select count(1) from SCHEMATA where SCHEMA_NAME = '" + codegenConfig.getModule()  + "'" );
+            int count = 0;
+            while(rs.next()){
+                count = rs.getInt(1);
+            }
+            if(count > 0){
+                throw new RuntimeException("数据库 【" + codegenConfig.getModule() + "】已存在");
+            }
+            stmt.close();
+            conn.close();
+
+            //重置连接
+            GeneratorProperties.setProperty("jdbc.url", codegenConfig.getDbUrl());
+            conn = DataSourceProvider.getConnection();
+            stmt = conn.createStatement();
+            stmt.executeUpdate("CREATE DATABASE " + codegenConfig.getModule() + " DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;");
+            stmt.close();
+            conn.close();
+
+            //连接生成的数据库
+            GeneratorProperties.setProperty("jdbc.url", tempStore);
+            //置空，重新生成
+            DataSourceProvider.setDataSource(null);
+            conn = DataSourceProvider.getConnection();
+            stmt = conn.createStatement();
+
+            Configuration conf = new Configuration();
+            conf.setClassForTemplateLoading(this.getClass(), "/templates");
+            // setEncoding这个方法一定要设置国家及其编码，不然在flt中的中文在生成html后会变成乱码
+            conf.setEncoding(Locale.getDefault(), "UTF-8");
+            Template template = conf.getTemplate("database.schema");
+            Map data = Maps.newHashMap();
+            data.put("dbprefix_module", codegenConfig.getModule()+"_");
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            template.process(data, new OutputStreamWriter(bos, "UTF-8"));
+
+
+            String sql = new String(bos.toByteArray(), "UTF-8");
+            String[] segSqls = sql.split(";");
+            for(int i = 0; i< segSqls.length; i++) {
+                if(segSqls[i].trim().length() > 0) {
+                    stmt.executeUpdate(segSqls[i]);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            try{
+                if(stmt!=null)
+                    stmt.close();
+            }catch(SQLException se2){
+            }// nothing we can do
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     private static void copyDirectiory(String sourceDir, String targetDir) throws IOException {
