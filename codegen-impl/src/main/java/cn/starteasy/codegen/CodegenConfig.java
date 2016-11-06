@@ -12,9 +12,19 @@ public class CodegenConfig {
     private String company = "starteasy";
     private String module = "sample";
 
-    private String dbUrl = "jdbc:mysql://repo.startupeasy.cn:33060/";
+    /** 用于生成代码 默认用于外部生成*/
+    private String dbUrl = "jdbc:mysql://repo.startupeasy.cn:33061/";
     private String dbUser = "soeasy";
     private String dbPassword = "S0easy";
+
+
+    /** 用于替换代码中的数据库连接 */
+    /** 分配给用户的独享数据库用户名  */
+    private String isolateUrl;
+    /** 分配给用户的独享数据库用户名  */
+    private String isolateUser;
+    /** 分配给用户的独享数据库密码  */
+    private String isolatePwd;
 
     public String getGenRootDir() {
         return genRootDir;
@@ -79,5 +89,29 @@ public class CodegenConfig {
 
     public void setDbPassword(String dbPassword) {
         this.dbPassword = dbPassword;
+    }
+
+    public String getIsolateUrl() {
+        return isolateUrl;
+    }
+
+    public void setIsolateUrl(String isolateUrl) {
+        this.isolateUrl = isolateUrl;
+    }
+
+    public String getIsolateUser() {
+        return isolateUser;
+    }
+
+    public void setIsolateUser(String isolateUser) {
+        this.isolateUser = isolateUser;
+    }
+
+    public String getIsolatePwd() {
+        return isolatePwd;
+    }
+
+    public void setIsolatePwd(String isolatePwd) {
+        this.isolatePwd = isolatePwd;
     }
 }

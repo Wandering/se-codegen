@@ -199,9 +199,9 @@ public class GeneratorFacade {
 
 		public void processByTable(Generator g, Table table,boolean isDelete, boolean isCommon) throws Exception {
 	        GeneratorModel m = GeneratorModelUtils.newFromTable(table);
-			m.templateModel.put("jdbcurl", GeneratorProperties.getRequiredProperty("jdbc.url"));
-			m.templateModel.put("jdbcusername", GeneratorProperties.getRequiredProperty("jdbc.username"));
-			m.templateModel.put("jdbcpassword", GeneratorProperties.getRequiredProperty("jdbc.password"));
+			m.templateModel.put("jdbcurl", GeneratorProperties.getRequiredProperty("jdbc.isolate.url"));
+			m.templateModel.put("jdbcusername", GeneratorProperties.getRequiredProperty("jdbc.isolate.username"));
+			m.templateModel.put("jdbcpassword", GeneratorProperties.getRequiredProperty("jdbc.isolate.password"));
 	        PrintUtils.printBeginProcess(table.getSqlName()+" => "+table.getClassName(),isDelete);
 	        if(isDelete)
 	        	g.deleteBy(m.templateModel,m.filePathModel);

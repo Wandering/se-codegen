@@ -1,8 +1,0 @@
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-
-    compile "org.springframework.boot:spring-boot-starter-web:$springbootVersion"
-
-    compile project(':codegen-impl')
-}

@@ -33,20 +33,33 @@ public class CodegenBuilder {
     public static void main(String[] args) {
         // 测试执行的话 生成到 当前工程下
         CodegenConfig codegenConfig = new CodegenConfig();
-        codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
 
-        //local codegen
-        codegenConfig.setModule("uaa");
+        //内部系统生成配置
+        codegenConfig.setModule("sample");
+        codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
+        //remote
+//        codegenConfig.setDbUrl("jdbc:mysql://repo.startupeasy.cn:33060/");
+//        codegenConfig.setDbUser("soeasy");
+//        codegenConfig.setDbPassword("S0easy");
+        //local
+        codegenConfig.setDbUrl("jdbc:mysql://localhost:3306/");
+        codegenConfig.setDbUser("root");
+        codegenConfig.setDbPassword("root");
 
         CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
         codegenBuilder.build(false);
 
 
-//        //online test
-//        codegenConfig.setModule("onlinetest");
+        //online test
+//        codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
+//        codegenConfig.setModule("yangqiang8app");
+//        codegenConfig.setIsolateUser("yangqiang8");
+//        codegenConfig.setIsolatePwd("yangqiang8");
 //
 //        CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
 //        codegenBuilder.build(true);
+
+
     }
 
     /**
@@ -64,7 +77,16 @@ public class CodegenBuilder {
 
         //2. 云端调度，生成对应的数据库 并返回连接信息
         if(isOnline) {
-            initDatabase(config);
+//            initDatabase(config);
+            //更改为用户独有的数据库信息
+//            GeneratorProperties.setProperty("jdbc.databasename", config.getModule());
+            GeneratorProperties.setProperty("jdbc.isolate.url", config.getIsolateUrl());
+            GeneratorProperties.setProperty("jdbc.isolate.username", config.getIsolateUser());
+            GeneratorProperties.setProperty("jdbc.isolate.password", config.getIsolatePwd());
+        } else {
+            GeneratorProperties.setProperty("jdbc.isolate.url", config.getDbUrl() + config.getModule() + "?useUnicode=true&amp;characterEncoding=UTF-8");
+            GeneratorProperties.setProperty("jdbc.isolate.username", config.getDbUser());
+            GeneratorProperties.setProperty("jdbc.isolate.password", config.getDbPassword());
         }
 
         GeneratorFacade generatorFacade = new GeneratorFacade(appOutRoot);
@@ -120,12 +142,20 @@ public class CodegenBuilder {
         GeneratorProperties.setProperty("jdbc.password", config.getDbPassword());
     }
 
+    /**
+     *
+     * 调用dubbo 服务   创建数据库、用户 并赋予该用户该数据库的相关数据库权限；
+     * @param codegenConfig
+     */
     private void initDatabase(CodegenConfig codegenConfig) {
         String tempStore = GeneratorProperties.getRequiredProperty("jdbc.url");
+
+
 
         Connection conn = null;
         Statement stmt = null;
         try {
+
             conn = DataSourceProvider.getSchemaConnection();
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select count(1) from SCHEMATA where SCHEMA_NAME = '" + codegenConfig.getModule()  + "'" );
@@ -139,11 +169,32 @@ public class CodegenBuilder {
             stmt.close();
             conn.close();
 
+            //创建用户并赋权
+            conn = DataSourceProvider.getUserConnection();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("select count(1) from user where User = '" + codegenConfig.getIsolateUser()  + "'" );
+
+            while(rs.next()){
+                count = rs.getInt(1);
+            }
+            if(count == 0){
+                //创建用户
+                stmt.executeUpdate("insert into user(Host, User, Password,ssl_cipher,x509_issuer,x509_subject) " +
+                        "values('%', '" + codegenConfig.getIsolateUser() + "',password('" + codegenConfig.getIsolatePwd() +"'), '', '', '')");
+            }
+            stmt.close();
+            conn.close();
+
+
             //重置连接
             GeneratorProperties.setProperty("jdbc.url", codegenConfig.getDbUrl());
             conn = DataSourceProvider.getConnection();
             stmt = conn.createStatement();
             stmt.executeUpdate("CREATE DATABASE " + codegenConfig.getModule() + " DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_general_ci;");
+
+            //赋权
+            stmt.executeUpdate("grant all  on " + codegenConfig.getModule() + ".* to " + codegenConfig.getIsolateUser() + "@'%' ");
+
             stmt.close();
             conn.close();
 
@@ -187,7 +238,7 @@ public class CodegenBuilder {
             }
         }
 
-
+        //最后变更codegen需要的数据库连接信息
     }
 
     private static void copyDirectiory(String sourceDir, String targetDir) throws IOException {

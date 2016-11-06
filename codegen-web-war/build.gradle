@@ -1,0 +1,30 @@
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile "org.springframework.boot:spring-boot-starter-test:$springbootVersion"
+    testCompile "org.springframework.boot:spring-boot-test:$springbootVersion"
+
+    compile "org.springframework.boot:spring-boot-starter-freemarker:$springbootVersion"
+
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2'
+    compile group: 'org.springframework.security', name: 'spring-security-jwt'
+
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+
+    compile("com.alibaba:dubbo:2.8.4")
+    compile("org.apache.zookeeper:zookeeper:3.4.6")
+    compile("com.github.sgroschupf:zkclient:0.1")
+    compile("com.alibaba:fastjson:1.2.13")
+
+    compile("cn.starteasy.core.common:se-domain-common:$seCommonVersion")
+    compile("cn.starteasy.core.common:se-web-common:$seCommonVersion")
+
+    compile ("cn.starteasy.uaa:uaa-client:$uaaVersion"){
+        exclude group:'cn.starteasy.core.common'
+    }
+    compile ("cn.starteasy.dbmanager:dbmanager-api:$dbmanagerVersion"){
+        exclude group:'cn.starteasy.core.common'
+    }
+    compile project(':codegen-impl')
+}
+
+

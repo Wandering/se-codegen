@@ -1,35 +1,128 @@
-buildscript{
+buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "http://repo.startupeasy.cn:8081/repository/maven-public/" }
+        jcenter()
+        maven { url "http://repo.spring.io/plugins-release" }
+        maven { url "http://repo.spring.io/milestone" }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
-    dependencies{
+    dependencies {
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.0.1"
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.6"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
+        classpath "org.springframework.build.gradle:propdeps-plugin:0.0.7"
+        classpath "se.transmode.gradle:gradle-docker:1.2"
+        classpath "io.spring.gradle:dependency-management-plugin:0.5.6.RELEASE"
+        //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
+        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.4'
         classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1+'
     }
 }
 
+
 apply plugin: 'java'
+sourceCompatibility=1.8
+targetCompatibility=1.8
+apply plugin: 'maven'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+apply plugin: 'propdeps'
+apply plugin: 'io.spring.dependency-management'
+/* downgrade Hibernate to 4.3 */
+ext['hibernate.version'] = '${hibernate_entitymanager_version}'
+dependencyManagement {
+    imports {
+//        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:'+ spring_cloud_version
+    }
+}
+defaultTasks 'bootRun'
 
-sourceCompatibility = 1.7
-version = '1.0'
-
-configurations {
-    all*.exclude group: 'log4j'
+bootRepackage {
+    mainClass = 'cn.starteasy.uaa.SeuaaApp'
 }
 
+war {
+    rootSpec.exclude("**/tomcat-*.jar")
+}
+
+springBoot {
+    mainClass = 'cn.starteasy.uaa.SeuaaApp'
+    executable = true
+}
+
+bootRun {
+    addResources = false
+}
+
+test {
+    include '**/*UnitTest*'
+    include '**/*IntTest*'
+
+    ignoreFailures true
+    reports.html.enabled = false
+}
+
+
+
+task testReport(type: TestReport) {
+    destinationDir = file("$buildDir/reports/tests")
+    reportOn test
+}
+
+
+
+//apply from: 'gradle/sonar.gradle'
+//
+//apply from: 'gradle/liquibase.gradle'
+//
+//apply from: 'gradle/gatling.gradle'
+//apply from: 'gradle/mapstruct.gradle'
+//apply from: 'gradle/docker.gradle'
+////jhipster-needle-gradle-apply-from - JHipster will add additional gradle scripts to be applied here
+//
+//if (project.hasProperty('prod')) {
+//    apply from: 'gradle/profile_prod.gradle'
+//} else {
+//    apply from: 'gradle/profile_dev.gradle'
+//}
+
+
+description = ''
+
+configurations {
+    providedRuntime
+    // netty's native is pulled by spring-cloud-starter-ribbon, but is useless unless you explicitly add the native binary dependency.
+    // Having it in the classpath without the binary can cause warnings
+    all*.exclude group: 'io.netty', module: 'netty-transport-native-epoll'
+}
 
 
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.starteasy.codegen'
-    version = '0.0.1'
+    version = '0.0.1-SNAPSHOT'
 
     apply plugin: 'java'
+    sourceCompatibility=1.8
+    targetCompatibility=1.8
+    apply plugin: 'maven'
+    apply plugin: 'spring-boot'
+    apply plugin: 'war'
+    apply plugin: 'propdeps'
+    apply plugin: 'io.spring.dependency-management'
+    /* downgrade Hibernate to 4.3 */
+    ext['hibernate.version'] = '${hibernate_entitymanager_version}'
+    dependencyManagement {
+        imports {
+//            mavenBom 'org.springframework.cloud:spring-cloud-dependencies:'+ spring_cloud_version
+        }
+    }
+
     apply plugin: 'idea'
     apply plugin: 'eclipse'
     apply plugin: 'maven-publish'
-
+    apply plugin: 'maven-publish-auth'
 
     repositories {
         mavenLocal()
@@ -45,30 +138,43 @@ allprojects {
     }
 
     publishing {
-//        publications {
-//            mavenJava(MavenPublication) { from components.java }
-//        }
+        task sourceJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
+        publications {
+            mavenJava(MavenPublication) { from components.java }
+            mavenJava(MavenPublication) {
+                artifact(sourceJar) {
+                    classifier = "sources"
+                }
+            }
+        }
 
         repositories {
             maven {
                 name = 'starteasy'
-                url "http://repo.starteasy.cn/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
+                url "http://repo.startupeasy.cn:8081/repository/maven-${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
             }
         }
     }
+
+//    tasks.withType(Compile) {
+//        options.encoding = "UTF-8"
+//    }
 }
 
-subprojects{
-    dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.11'
-        compile 'mysql:mysql-connector-java:5.1.30'
-        compile 'org.freemarker:freemarker:2.3.20'
-        compile 'org.slf4j:slf4j-api:1.7.7'
-        compile 'ch.qos.logback:logback-classic:1.1.2'
-        compile 'org.slf4j:log4j-over-slf4j:1.7.7'
-        compile 'org.slf4j:jcl-over-slf4j:1.7.7'
-        compile 'org.slf4j:jul-to-slf4j:1.7.7'
-    }
+dependencies {
+
+}
+
+
+task createREADME() {
+    file("README.md").createNewFile()
+}
+
+subprojects {
 
     task "createJavaProject" << {
         sourceSets*.java.srcDirs*.each { it.mkdirs() }
@@ -81,31 +187,74 @@ subprojects{
         file("src/main/scripts").mkdirs()
 
         /** 填充文件，便于git提交 */
-        file("src/main/java/cn/starteasy/codegen").mkdirs()
-        file("src/main/java/cn/starteasy/codegen/package-info.java").createNewFile()
+        file("src/main/java/cn/starteasy").mkdirs()
+        file("src/main/java/cn/starteasy/package-info.java").createNewFile()
+        file("src/main/resources").mkdirs()
         file("src/main/resources/spring.xml").createNewFile()
 
-        file("src/test/java/cn/starteasy/codegen").mkdirs()
-        file("src/test/java/cn/starteasy/codegen/package-info.java").createNewFile()
+        file("src/test/java/cn/starteasy").mkdirs()
+        file("src/test/java/cn/starteasy/package-info.java").createNewFile()
         file("src/test/resources/spring.xml").createNewFile()
     }
 
-    task createREADME(){
-        //file("README.md").createNewFile()
+    /** 有时候会报错，但需要执行 */
+//    task createREADME(){
+//        file("README.md").createNewFile()
+//    }
+
+    configurations {
+        provided
+        compile.extendsFrom provided
+
+        all*.exclude group: 'org.springframework', module: 'spring'
+        all*.exclude group: 'asm', module: 'asm'
+        all*.exclude group: 'log4j', module: 'log4j'
+        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 }
 
-configure(subprojects.findAll{it.name.contains('war')}){
+configure(subprojects.findAll { it.name.contains('-service') }) {
+//    apply from: '../gradle/mapstruct.gradle'
+
+    task createServiceProject(dependsOn: 'createJavaProject') << {
+
+        /** 配置生成 */
+        file("src/main/resources/config").mkdirs()
+        file("src/main/resources/config/main-conf.properties").createNewFile()
+        file("src/main/resources/config/metadata.properties").createNewFile()
+    }
+
+}
+
+configure(subprojects.findAll { it.name.contains('war') }) {
     apply plugin: 'war'
+    apply plugin: 'jetty'
 
     task createWebProject(dependsOn: 'createJavaProject') << {
         def webAppDir = file("$webAppDirName")
         webAppDir.mkdirs()
+
+        file("src/main/resources/config").mkdirs()
+        file("src/main/resources/config/main-conf.properties").createNewFile()
+        file("src/main/resources/config/metadata.properties").createNewFile()
     }
 
 }
 
-task dist(type:Zip){
-    from jar.outputs.files
-    //from war.outputs.files
+clean {
+    delete "target"
 }
+
+task cleanResources(type: Delete) {
+    delete 'build/resources'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
+}
+
+task stage(dependsOn: 'bootRepackage') {
+}
+
+compileJava.dependsOn processResources
+processResources.dependsOn cleanResources
