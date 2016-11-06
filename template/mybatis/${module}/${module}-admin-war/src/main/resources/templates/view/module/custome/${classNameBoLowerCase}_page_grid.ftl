@@ -17,7 +17,7 @@
                                                              style="float: left; line-height: 38px;">
                         <#if classNameAllLower=="adminuser">
                                 分配角色
-                        </else>
+                        <#else>
                                 分配资源
                         </#if>
 
