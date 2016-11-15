@@ -57,6 +57,7 @@ public class WebApplicationApp {
      * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(String[] args) throws UnknownHostException {
+        System.out.println(System.getProperty("java.io.tmpdir"));
         SpringApplication app = new SpringApplication(WebApplicationApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();

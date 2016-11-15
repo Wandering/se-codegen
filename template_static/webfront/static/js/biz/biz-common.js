@@ -64,11 +64,11 @@ function dynGetData(ajaxUrl) {
     $.getJSON(ajaxUrl, function (result) {
         //debugger;
         if ("0000000" == result.rtnCode) {
-            for (i = 0; i < result.bizData.rows.length; i++) {
-                if (i < result.bizData.rows.length - 1) {
-                    returnStr += result.bizData.rows[i].id + ":" + result.bizData.rows[i].name + ";";
+            for (i = 0; i < result.bizData.lists.length; i++) {
+                if (i < result.bizData.lists.length - 1) {
+                    returnStr += result.bizData.lists[i].id + ":" + result.bizData.lists[i].name + ";";
                 } else {
-                    returnStr += result.bizData.rows[i].id + ":" + result.bizData.rows[i].name;
+                    returnStr += result.bizData.lists[i].id + ":" + result.bizData.lists[i].name;
                 }
             }
         } else {
@@ -77,6 +77,11 @@ function dynGetData(ajaxUrl) {
     });
     $.ajaxSettings.async = true;
     return returnStr;
+}
+
+/** 服务端做统一包装 */
+function commonDynGetData(modelName) {
+    return dynGetData("/admin/common/getdatas/" + modelName);
 }
 
 //对一个字段多个属性值组合的列进行显示

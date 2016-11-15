@@ -1,6 +1,7 @@
 <#include "/java_copyright.include"/>
 package ${basepackage}.web.common;
 
+import cn.starteasy.core.common.ServiceManager;
 import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +14,15 @@ import javax.annotation.PostConstruct;
  */
 @Service("${module}PersistenceProviderMaps")
 public class PersistenceProviderMaps extends BasePersistenceProviderMaps {
-
+    @Autowired
+    private ServiceManager serviceManager;
 //    @Autowired
 //    private IReportMailTemplateFacade reportMailTemplateFacade;
 
     @PostConstruct
     public void init() {
 //        providerMap.put("reportmailtemplate".toLowerCase(), reportMailTemplateFacade);
+        serviceManager.batchAddPersistenceProvider(providerMap);
     }
 
 }

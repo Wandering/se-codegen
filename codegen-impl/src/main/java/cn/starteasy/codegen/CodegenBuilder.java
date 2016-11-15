@@ -4,7 +4,9 @@ import cn.org.rapid_framework.generator.GeneratorFacade;
 import cn.org.rapid_framework.generator.GeneratorProperties;
 import cn.org.rapid_framework.generator.provider.db.DataSourceProvider;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
+import com.sun.source.tree.CatchTree;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -19,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by qyang on 2016/10/27.
@@ -32,13 +35,24 @@ public class CodegenBuilder {
 
     public static void main(String[] args) {
         // 测试执行的话 生成到 当前工程下
-        CodegenConfig codegenConfig = new CodegenConfig();
+        CodegenConfig codegenConfig = CodegenConfig.getInstance();
 
         //内部系统生成配置
         codegenConfig.setModule("sample");
+
+        //只生成增量的部分 并拷贝  start
+//        codegenConfig.setModule("uaa");
+        Set<String> genTbls = Sets.newHashSet();
+        genTbls.add("sample_resource_design");
+        genTbls.add("sample_resource_search");
+
+        codegenConfig.setGenTbls(genTbls);
+        codegenConfig.setDestProjectDir("/Users/qyang/works/mywork/se4osc/sample/");
+        //只生成增量的部分 并拷贝  end
+
         codegenConfig.setGenRootDir(GeneratorProperties.getRequiredProperty("outRoot"));
         //remote
-//        codegenConfig.setDbUrl("jdbc:mysql://repo.startupeasy.cn:33060/");
+//        codegenConfig.setDbUrl("jdbc:mysql://repo.startupeasy.cn:33061/");
 //        codegenConfig.setDbUser("soeasy");
 //        codegenConfig.setDbPassword("S0easy");
         //local
@@ -48,6 +62,10 @@ public class CodegenBuilder {
 
         CodegenBuilder codegenBuilder = new CodegenBuilder(codegenConfig);
         codegenBuilder.build(false);
+
+//        codegenBuilder.test(false);
+
+
 
 
         //online test
@@ -61,6 +79,8 @@ public class CodegenBuilder {
 
 
     }
+
+
 
     /**
      *
@@ -97,12 +117,19 @@ public class CodegenBuilder {
             generatorFacade.generateByAllTable("template/mybatis");    //自动搜索数据库中的所有表并生成文件,template为模板的根目录
             generatorFacade.generateByTableList("template/common");
 
+            String domain_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-domain";
+            String service_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-service";
             String admin_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-admin-war";
+            String webwar_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-web-war";
             String webfront_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-webfront";
             //拷贝静态文件  因为freemarker 不能 直接 生成
             //将  /template_static/admin-war 下的文件 拷贝到 admin-war/src/main下 然后将/template_static/webfront/static 拷贝到 admin-war/src/main/webapp/assets下
             copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war", admin_projectPath+"/src/main");
             copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/admin-war-view", admin_projectPath+"/src/main/resources/templates/view");
+
+            //dyn 相关文件的拷贝
+
+
             copyDirectiory(GeneratorProperties.getRequiredProperty("rootDir")+"/template_static/webfront/static", admin_projectPath+"/src/main/webapp/assets");
 
 
@@ -114,6 +141,37 @@ public class CodegenBuilder {
 
             //删除内置表的 domain/dao/service
 
+
+
+            //TODO 合并增量的文件到 源工程目录下   domain/dao/service/facade/mapper/admincontroller/ftl
+            if(config.getGenTbls() != null && config.getGenTbls().size() > 0 && config.getDestProjectDir() != null){
+                copyDirectiory(domain_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/domain",
+                        config.getDestProjectDir() + config.getModule() + "-domain" + "/src/main/java/" + config.makeBasePackageDir() + "/domain");
+
+//                copyDirectiory(domain_projectPath + "/src/main/java/docs",
+//                        config.getDestProjectDir() + config.getModule() + "-domain" + "/src/main/docs");
+
+
+                copyDirectiory(service_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/dao",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/java/" + config.makeBasePackageDir() + "/dao");
+                copyDirectiory(service_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/service",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/java/" + config.makeBasePackageDir() + "/service");
+                copyDirectiory(service_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/facade",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/java/" + config.makeBasePackageDir() + "/facade");
+
+                copyDirectiory(service_projectPath + "/src/main/resources/mapper",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/resources/mapper");
+
+                copyDirectiory(admin_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller",
+                        config.getDestProjectDir() + config.getModule() + "-admin-war" + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller");
+                copyDirectiory(admin_projectPath + "/src/main/resources/templates/view/module",
+                        config.getDestProjectDir() + config.getModule() + "-admin-war" + "/src/main/resources/templates/view/module");
+
+
+                copyDirectiory(webwar_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller/api",
+                        config.getDestProjectDir() + config.getModule() + "-web-war" + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller/api");
+
+            }
 
 
             Thread.sleep(20000);
@@ -271,5 +329,50 @@ public class CodegenBuilder {
     private static void copyFile(String file, String targetDir) throws IOException {
         File rawFile = new File(file);
         Files.copy(rawFile, new File(targetDir+"/"+rawFile.getName()));
+    }
+
+
+
+    public void test(boolean b){
+        String appOutRoot = config.getGenRootDir() + "/" + config.getModule();
+
+        String domain_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-domain";
+        String service_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-service";
+        String admin_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-admin-war";
+        String webwar_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-web-war";
+        String webfront_projectPath = appOutRoot + "/"+ config.getModule() + "/"+ config.getModule() + "-webfront";
+
+        try {
+            if (config.getGenTbls() != null && config.getGenTbls().size() > 0 && config.getDestProjectDir() != null) {
+                copyDirectiory(domain_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/domain",
+                        config.getDestProjectDir() + config.getModule() + "-domain" + "/src/main/java/" + config.makeBasePackageDir() + "/domain");
+
+//                copyDirectiory(domain_projectPath + "/src/main/java/docs",
+//                        config.getDestProjectDir() + config.getModule() + "-domain" + "/src/main/docs");
+
+
+                copyDirectiory(service_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/dao",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/java/" + config.makeBasePackageDir() + "/dao");
+                copyDirectiory(service_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/service",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/java/" + config.makeBasePackageDir() + "/service");
+                copyDirectiory(service_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/facade",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/java/" + config.makeBasePackageDir() + "/facade");
+
+                copyDirectiory(service_projectPath + "/src/main/resources/mapper",
+                        config.getDestProjectDir() + config.getModule() + "-service" + "/src/main/resources/mapper");
+
+                copyDirectiory(admin_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller",
+                        config.getDestProjectDir() + config.getModule() + "-admin-war" + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller");
+                copyDirectiory(admin_projectPath + "/src/main/resources/templates/view/module",
+                        config.getDestProjectDir() + config.getModule() + "-admin-war" + "/src/main/resources/templates/view/module");
+
+
+                copyDirectiory(webwar_projectPath + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller/api",
+                        config.getDestProjectDir() + config.getModule() + "-web-war" + "/src/main/java/" + config.makeBasePackageDir() + "/web/controller/api");
+
+            }
+        } catch (Exception e){
+
+        }
     }
 }

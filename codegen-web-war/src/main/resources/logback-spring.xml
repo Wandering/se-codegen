@@ -22,7 +22,7 @@
     </appender>
 -->
 
-    <logger name="io.github.jhipster.sample" level="#logback.loglevel#"/>
+    <logger name="cn.starteasy.codegen" level="#logback.loglevel#"/>
 
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>
@@ -57,5 +57,9 @@
     <root level="#logback.loglevel#">
         <appender-ref ref="CONSOLE"/>
     </root>
+
+    <logger name="cn.starteasy.codegen" level="#logback.loglevel#">
+        <appender-ref ref="FILE"/>
+    </logger>
 
 </configuration>

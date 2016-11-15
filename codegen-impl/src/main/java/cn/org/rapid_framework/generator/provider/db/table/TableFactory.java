@@ -19,6 +19,9 @@ import cn.org.rapid_framework.generator.provider.db.table.model.util.NumGen;
 import cn.org.rapid_framework.generator.provider.db.table.model.util.SeqGen;
 import cn.org.rapid_framework.generator.util.*;
 import cn.org.rapid_framework.generator.util.XMLHelper.NodeData;
+import cn.starteasy.codegen.CodegenConfig;
+import cn.starteasy.codegen.configs.Config4Framework;
+import com.google.common.collect.Lists;
 
 
 /**
@@ -41,19 +44,7 @@ public class TableFactory {
     private Map<String, ParentRes> parentResMap = new HashMap<String, ParentRes>();
 
 	private Map<String,String> tabException = new HashMap<String, String>();
-	private static String[] alreadyTbls = new String[]{
-			"_data_model", "_model", "_resource", "_resource_action", "_resource_grid",
-			"_role", "_role_resource", "_role_user", "_user_data", "_datagroup", "_datagroup_data", "_user_datagroup",
-			"_adminuser", "_adminusertoken", "_user", "_usertoken"};
 
-	private static String[] defaultColumns = new String[]{"createDate","lastModifier","lastModDate",
-			"dataModelId","dataId","groupId","tblName",
-			"isAdmin","datagroupId","bizDimension","employeeId",
-			"modelId","assignUrl","whereSql",
-			"resourceId","resourceActionId","roleId","userId",
-			"orderNum","parentId","longNumber","bizModelName",
-			"resId","displayName","colId","orderNum","moduleName",
-			"resourceId","divId","actionScript","actionAlias"};
 	private String dbType = "mysql";
 	
 	private TableFactory() {
@@ -300,6 +291,18 @@ public class TableFactory {
 				}
             }
         }
+
+        //支持 仅生成指定的表对应的代码
+		List<Table> tempTables = Lists.newArrayList();
+		if(CodegenConfig.getInstance().getGenTbls() != null && CodegenConfig.getInstance().getGenTbls().size() > 0){
+			for(Table tbl : tables){
+				if(CodegenConfig.getInstance().getGenTbls().contains(tbl.getOriginSqlName())){
+					tempTables.add(tbl);
+				}
+			}
+
+			tables = tempTables;
+		}
 
 		return tables;
 	}
@@ -637,7 +640,7 @@ public class TableFactory {
 
 	private boolean isdefaultTable(String tableName)
 	{
-		for(String already : alreadyTbls){
+		for(String already : Config4Framework.alreadyTbls){
 			if(tableName.toLowerCase().endsWith(already)){
 				return true;
 			}
@@ -647,7 +650,7 @@ public class TableFactory {
 
 	private String getdefaultcolumn(String columnName)
 	{
-		for(String already : defaultColumns){
+		for(String already : Config4Framework.defaultColumns){
 			if(already.toLowerCase().equals(columnName)){
 				return already;
 			}

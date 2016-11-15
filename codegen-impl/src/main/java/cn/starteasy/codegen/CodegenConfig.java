@@ -1,5 +1,7 @@
 package cn.starteasy.codegen;
 
+import java.util.Set;
+
 /**
  * Created by qyang on 2016/10/27.
  */
@@ -25,6 +27,18 @@ public class CodegenConfig {
     private String isolateUser;
     /** 分配给用户的独享数据库密码  */
     private String isolatePwd;
+
+
+    private Set<String> genTbls;
+    private String destProjectDir;
+
+    public static CodegenConfig getInstance(){
+        return CodegenConfigHolder.instance;
+    }
+
+    private static class CodegenConfigHolder{
+        private static CodegenConfig instance = new CodegenConfig();
+    }
 
     public String getGenRootDir() {
         return genRootDir;
@@ -113,5 +127,21 @@ public class CodegenConfig {
 
     public void setIsolatePwd(String isolatePwd) {
         this.isolatePwd = isolatePwd;
+    }
+
+    public Set<String> getGenTbls() {
+        return genTbls;
+    }
+
+    public void setGenTbls(Set<String> genTbls) {
+        this.genTbls = genTbls;
+    }
+
+    public String getDestProjectDir() {
+        return destProjectDir;
+    }
+
+    public void setDestProjectDir(String destProjectDir) {
+        this.destProjectDir = destProjectDir;
     }
 }

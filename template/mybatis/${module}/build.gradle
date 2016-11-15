@@ -18,6 +18,7 @@ buildscript {
         //jhipster-needle-gradle-buildscript-dependency - JHipster will add additional gradle build script plugins here
         classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.4'
         classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1+'
+        classpath 'org.springframework:springloaded:1.2.6.RELEASE'
     }
 }
 

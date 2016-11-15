@@ -10,7 +10,7 @@ import cn.starteasy.core.common.service.IBaseService;
     </#if>
 </#list>
 
-
+import cn.starteasy.core.common.ServiceManager;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,8 @@ import cn.starteasy.core.common.adminui.controller.helpers.BaseServiceMaps;
 
 @Service("${module}ServiceMaps")
 public class ServiceMaps extends BaseServiceMaps{
+    @Autowired
+    private ServiceManager serviceManager;
 
     <#list newtables as table>
     <#assign className = table.classNameBo>
@@ -39,6 +41,8 @@ public class ServiceMaps extends BaseServiceMaps{
             <#assign classNameLower = className?uncap_first>
         serviceMap.put("${classNameLower}",${classNameLower}Service);
         </#list>
+
+        serviceManager.batchAdd(serviceMap);
     }
 
 }
