@@ -1,5 +1,5 @@
 <#include "/java_copyright.include"/>
-package ${basepackage}.common;
+package ${basepackage}.web.common;
 
 import cn.starteasy.core.common.ServiceManager;
 import cn.starteasy.core.common.adminui.controller.helpers.BasePersistenceProviderMaps;

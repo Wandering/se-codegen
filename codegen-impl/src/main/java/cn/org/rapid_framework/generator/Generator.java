@@ -183,6 +183,10 @@ public class Generator {
 					srcFile.getPath().contains("/dao/") || srcFile.getPath().contains("/service/") || srcFile.getPath().contains("/controller/api/"))){
 				continue;
 			}
+			//页面设计的facade 也不用生成
+			if(templateModel.get("table") != null && ((Table)templateModel.get("table")).getSqlName().endsWith("_resource_design") && (srcFile.getPath().contains("/facade/"))){
+				continue;
+			}
 
             if(isCommon){  //只执行DAO.xml模板   **Controller.java   ***.ftl  （managerui-startup中不需要这些特定的模板）
                 if(srcFile.getName().endsWith("DAO.xml") || srcFile.getName().endsWith(".ftl") || (srcFile.getName().endsWith("Controller.java") && !srcFile.getName().endsWith("CommonController.java"))){
