@@ -93,3 +93,5 @@
 
 ##zookeeper log##
 zookeeper.out
+
+/generator-output
