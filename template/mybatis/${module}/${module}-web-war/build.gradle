@@ -7,6 +7,9 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-freemarker:$springbootVersion"
 
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2'
+    compile group: 'org.springframework.security', name: 'spring-security-jwt'
+
     compile "cn.starteasy.core.common:se-admin-common:$seCommonVersion"
 
     compile project(':${module}-service')
