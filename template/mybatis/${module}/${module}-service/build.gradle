@@ -2,7 +2,12 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile "org.springframework:spring-test:$springVersion"
 
+    compile("org.apache.httpcomponents:httpclient:4.5.2")
     compile("cn.starteasy.core.common:se-admin-ser-common:$seCommonVersion")
+            {
+                exclude group:'org.springframework', module:'spring-web'
+                exclude group:'org.apache.httpcomponents', module:'httpclient'
+            }
 
     compile project(':${module}-api')
 
