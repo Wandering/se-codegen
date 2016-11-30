@@ -24,6 +24,7 @@ import cn.starteasy.core.common.protocol.utils.RtnCodeEnum;
 import ${basepackage}.domain.${className};
 </#if>
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,7 +156,7 @@ public class Api${className}Controller{
 
 <#list table.columns as column>
     <#if column.possibleShortJavaType = 'String'>
-            if(!StringUtils.isBlank(${classNameLower}.get${column.columnName}())){
+            if(!StringUtils.isBlank(String.valueOf(ObjectUtils.defaultIfNull(${classNameLower}.get${column.columnName}(), "")))){
                 ${classNameLower}_old.set${column.columnName}(${classNameLower}.get${column.columnName}());
             }
     <#else>
@@ -226,7 +227,7 @@ public class Api${className}Controller{
             Map<String, Object> whereParams = new HashMap<String, Object>();
 <#list table.columns as column>
     <#if column.possibleShortJavaType = 'String'>
-            if(!StringUtils.isBlank(${classNameLower}.get${column.columnName}())){
+            if(!StringUtils.isBlank(String.valueOf(ObjectUtils.defaultIfNull(${classNameLower}.get${column.columnName}(), "")))){
                 whereParams.put("${column}", new SearchField("${column}", "like", "%" + ${classNameLower}.get${column.columnName}() + "%"));
             }
     <#else>
