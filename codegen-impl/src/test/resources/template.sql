@@ -8,4 +8,4 @@ CREATE TABLE `***_***` (
   `lastModifier` int(11) NOT NULL COMMENT '修改人',
   `lastModDate` bigint(20) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户|用户管理|基础管理|CreateBaseDomain\n用户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户|用户管理|基础管理|CreateBaseDomain\n用户';

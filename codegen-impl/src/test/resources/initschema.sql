@@ -14,7 +14,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
@@ -125,9 +125,9 @@ CREATE TABLE `se_data_model` (
   `modelId` int(11) NOT NULL COMMENT '其对应的模型主体id',
   `assignUrl` varchar(32) NOT NULL DEFAULT '' COMMENT '分配的url',
   `whereSql` varchar(512) NOT NULL DEFAULT '' COMMENT '追加数据权限的sql',
-  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '按**维度设置',
+  `name` varchar(32) NOT NULL DEFAULT '' COMMENT '按**维度设置',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据权限模型|数据权限设置|基础管理|CreateBaseDomain\n数据权限model';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据权限模型|数据权限设置|基础管理|CreateBaseDomain\n数据权限model';
 
 
 
@@ -145,7 +145,7 @@ CREATE TABLE `se_datagroup` (
   `lastModifier` int(11) NOT NULL COMMENT '修改人',
   `lastModDate` bigint(11) NOT NULL COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据组|数据组管理|基础管理|CreateBaseDomain\n数据组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据组|数据组管理|基础管理|CreateBaseDomain\n数据组';
 
 
 
@@ -163,7 +163,7 @@ CREATE TABLE `se_datagroup_data` (
   `dataId` int(11) NOT NULL COMMENT '对应id',
   `groupId` int(11) NOT NULL COMMENT '数据组id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='数据组数据|数据组分配|基础管理|CreateBaseDomain\n数据组数据，数据组和数据的对应关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据组数据|数据组分配|基础管理|CreateBaseDomain\n数据组数据，数据组和数据的对应关系';
 
 
 
@@ -181,7 +181,7 @@ CREATE TABLE `se_model` (
   `tblName` varchar(32) DEFAULT NULL COMMENT '对应表名',
   `description` varchar(64) NOT NULL DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='业务模型|业务模型|基础管理|CreateBaseDomain\n业务模型(人员、薪酬等)';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模型|业务模型|基础管理|CreateBaseDomain\n业务模型(人员、薪酬等)';
 
 LOCK TABLES `se_model` WRITE;
 /*!40000 ALTER TABLE `se_model` DISABLE KEYS */;
@@ -197,7 +197,7 @@ UNLOCK TABLES;
 CREATE TABLE `se_resource` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `url` varchar(256) NOT NULL DEFAULT '' COMMENT '页面url',
-  `orderNum` int(11) NOT NULL DEFAULT '0' COMMENT '顺序',
+  `orderNum` int(11) DEFAULT '0' COMMENT '顺序',
   `parentId` int(11) DEFAULT NULL COMMENT '父页面,null为顶层页面',
   `number` varchar(32) NOT NULL DEFAULT '' COMMENT '编码',
   `longNumber` varchar(128) NOT NULL DEFAULT '' COMMENT '长编码',
@@ -207,11 +207,11 @@ CREATE TABLE `se_resource` (
   `lastModifier` int(11) NOT NULL COMMENT '修改人',
   `lastModDate` bigint(11) NOT NULL COMMENT '修改时间',
   `status` tinyint(4) NOT NULL COMMENT '状态',
-  `description` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
+  `description` varchar(256)  DEFAULT NULL COMMENT '描述',
   `modelId` int(11) DEFAULT NULL COMMENT '主模型id  和 数据权限相关',
   `bizModelName` varchar(16) NOT NULL DEFAULT '' COMMENT '业务模型名称|在同一个业务系统里不允许有同名的业务模型',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资源|资源管理|基础管理|CreateBaseDomain\n资源，一般为页面';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源|资源管理|基础管理|CreateBaseDomain\n资源，一般为页面';
 
 LOCK TABLES `se_resource` WRITE;
 /*!40000 ALTER TABLE `se_resource` DISABLE KEYS */;
@@ -227,18 +227,18 @@ UNLOCK TABLES;
 CREATE TABLE `se_resource_action` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `resourceId` int(11) NOT NULL COMMENT '所属资源id',
-  `divId` varchar(11) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '' COMMENT '页面元素id',
-  `actionScript` varchar(512) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '' COMMENT '按钮对应的操作脚本',
+  `divId` varchar(11)  DEFAULT '' COMMENT '页面元素id',
+  `actionScript` varchar(512)  DEFAULT '' COMMENT '按钮对应的操作脚本',
   `name` varchar(16) NOT NULL DEFAULT '' COMMENT '操作名称',
-  `actionAlias` varchar(16) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '操作标识',
+  `actionAlias` varchar(16)  NOT NULL DEFAULT '' COMMENT '操作标识',
   `creator` int(11) NOT NULL COMMENT '创建人',
   `createDate` bigint(11) NOT NULL COMMENT '创建时间',
   `lastModifier` int(11) NOT NULL COMMENT '修改人',
   `lastModDate` bigint(11) NOT NULL COMMENT '修改时间',
   `status` tinyint(4) NOT NULL COMMENT '状态',
-  `description` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT '' COMMENT '描述',
+  `description` varchar(256)  DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资源操作|资源管理|基础管理|CreateBaseDomain\n页面对应的操作';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源操作|资源管理|基础管理|CreateBaseDomain\n页面对应的操作';
 
 LOCK TABLES `se_resource_action` WRITE;
 /*!40000 ALTER TABLE `se_resource_action` DISABLE KEYS */;
@@ -260,8 +260,8 @@ CREATE TABLE `se_resource_grid` (
   `resId` int(11) NOT NULL COMMENT '资源id',
   `displayName` varchar(32) NOT NULL DEFAULT '' COMMENT ' 显示名称',
   `colId` varchar(32) NOT NULL DEFAULT '' COMMENT 'grid列id',
-  `orderNum` int(11) NOT NULL COMMENT '顺序号',
-  `width` int(11) NOT NULL COMMENT '显示的宽度',
+  `orderNum` int(11) DEFAULT '0' COMMENT '顺序号',
+  `width` int(11) DEFAULT '0' COMMENT '显示的宽度',
   `edittype` varchar(16) DEFAULT '' COMMENT '编辑器类型',
   `editable` varchar(8) NOT NULL DEFAULT 'true' COMMENT '是否可编辑|false,编辑页面不显示',
   `editoptions` varchar(256) NOT NULL DEFAULT '{}' COMMENT 'json',
@@ -271,10 +271,10 @@ CREATE TABLE `se_resource_grid` (
   `unformat` varchar(16) DEFAULT NULL COMMENT '扩展编辑器',
   `hide` tinyint(4) DEFAULT '0' COMMENT '隐藏|1列表和编辑页面都不显示',
   `unedit` tinyint(4) DEFAULT '0' COMMENT '不可编辑|编辑页面不可编辑，但在表格和编辑页面显示',
-  `description` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '描述',
+  `description` varchar(64)  NOT NULL DEFAULT '' COMMENT '描述',
   `moduleName` varchar(45) DEFAULT NULL COMMENT '模块名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资源grid|资源grid管理|基础管理|CreateBaseDomain\n页面 grid的元数据描述';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源grid|资源grid管理|基础管理|CreateBaseDomain\n页面 grid的元数据描述';
 
 LOCK TABLES `se_resource_grid` WRITE;
 /*!40000 ALTER TABLE `se_resource_grid` DISABLE KEYS */;
@@ -297,7 +297,7 @@ CREATE TABLE `se_role` (
   `status` tinyint(4) NOT NULL COMMENT '状态',
   `description` varchar(256) NOT NULL DEFAULT '' COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色|角色管理|基础管理|CreateBaseDomain\n角色';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色|角色管理|基础管理|CreateBaseDomain\n角色';
 
 LOCK TABLES `se_role` WRITE;
 /*!40000 ALTER TABLE `se_role` DISABLE KEYS */;
@@ -321,7 +321,7 @@ CREATE TABLE `se_role_resource` (
   `resourceActionId` int(11) NOT NULL COMMENT '功能按钮id',
   `roleId` int(11) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色资源|角色资源分配|基础管理|CreateBaseDomain\n角色所管辖的页面资源';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色资源|角色资源分配|基础管理|CreateBaseDomain\n角色所管辖的页面资源';
 
 LOCK TABLES `se_role_resource` WRITE;
 /*!40000 ALTER TABLE `se_role_resource` DISABLE KEYS */;
@@ -345,7 +345,7 @@ CREATE TABLE `se_role_user` (
   `userId` int(11) NOT NULL COMMENT '用户id',
   `roleId` int(11) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户角色|用户角色分配|基础管理|CreateBaseDomain\n用户对应的角色';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色|用户角色分配|基础管理|CreateBaseDomain\n用户对应的角色';
 
 LOCK TABLES `se_role_user` WRITE;
 /*!40000 ALTER TABLE `se_role_user` DISABLE KEYS */;
@@ -370,7 +370,7 @@ CREATE TABLE `se_user_datagroup` (
   `datagroupId` int(11) NOT NULL COMMENT '数据组id',
   `userId` int(11) NOT NULL COMMENT '用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户数据组|用户数据组分配|基础管理|CreateBaseDomain\n用户和数据组对应关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户数据组|用户数据组分配|基础管理|CreateBaseDomain\n用户和数据组对应关系';
 
 
 

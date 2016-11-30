@@ -31,6 +31,8 @@ public class CodegenConfig {
 
     private Set<String> genTbls;
     private String destProjectDir;
+    /** 增量生成时有效， isFirst 为 true 覆盖facade */
+    private boolean first = true;
 
     public static CodegenConfig getInstance(){
         return CodegenConfigHolder.instance;
@@ -143,5 +145,13 @@ public class CodegenConfig {
 
     public void setDestProjectDir(String destProjectDir) {
         this.destProjectDir = destProjectDir;
+    }
+
+    public boolean isFirst() {
+        return first;
+    }
+
+    public void setFirst(boolean first) {
+        this.first = first;
     }
 }

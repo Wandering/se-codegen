@@ -52,7 +52,7 @@ VALUES('${table.seq}','/admin/${bizSys}/${classNameAllLower}','${table.seq}','${
 <#assign resourceId=resourceId+1/>
 </#list>
 
---更新内置列不可编辑
+
 update ${module}_resource_grid SET editable ="false" where colId="createDate" ;
 update ${module}_resource_grid SET editable = "false" where colId="creator" ;
 update ${module}_resource_grid SET editable = "false" where colId="lastModifier" ;
@@ -65,5 +65,5 @@ INSERT INTO `${module}_role` (`id`,`name`,`description`) VALUES(1, 'admin', '管
 
 INSERT INTO `${module}_role_user` (`id`,`userId`,`roleId`) VALUES(1, 1, 1);
 
-insert into lms_role_resource(`resourceId`, `resourceActionId`, `roleId`)
-select r.id, ra.id, 1 from lms_resource as r, `lms_resource_action` ra;
+insert into ${module}_role_resource(`resourceId`, `resourceActionId`, `roleId`)
+select r.id, ra.id, 1 from ${module}_resource as r, `${module}_resource_action` ra;

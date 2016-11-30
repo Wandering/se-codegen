@@ -58,4 +58,8 @@
         <appender-ref ref="CONSOLE"/>
     </root>
 
+    <logger name="${topDomain}.${company}.${module}" level="#logback.loglevel#">
+        <appender-ref ref="FILE"/>
+    </logger>
+
 </configuration>

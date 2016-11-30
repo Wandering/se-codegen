@@ -69,6 +69,8 @@ allprojects {
 
     repositories {
         mavenLocal()
+        maven { url "http://repo.startupeasy.cn:8081/repository/maven-public/" }
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'http://repository.jboss.com/maven2/' }
         mavenCentral()
         jcenter()
@@ -78,7 +80,6 @@ allprojects {
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'http://repo.maven.apache.org/maven2' }
-        maven { url "http://repo.startupeasy.cn:8081/repository/maven-public/" }
     }
 
     publishing {
