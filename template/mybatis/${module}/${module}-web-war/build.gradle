@@ -10,7 +10,7 @@ dependencies {
     compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2'
     compile group: 'org.springframework.security', name: 'spring-security-jwt'
 
-    compile ("cn.starteasy.core.common:se-admin-common:$seCommonVersion")
+    compile ("cn.starteasy.core.common:se-web-common:$seCommonVersion")
             {
                 exclude group:'org.springframework', module:'spring-web'
                 exclude group:'org.apache.httpcomponents', module:'httpclient'
